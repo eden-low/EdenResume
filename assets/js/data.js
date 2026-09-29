@@ -87,5 +87,37 @@ window.RESUME_DATA = {
     tools: ['Git', 'GitHub', 'VS Code', 'Docker', 'Playwright', 'API Testing', 'Database Migration', 'E2E Testing'],
     soft: { en: ['Leadership', 'Communication', 'Documentation', 'Coordination'], zh: ['领导力', '沟通', '文档撰写', '协调'] }
   },
-  LANGUAGES: { en: ['English', 'Mandarin', 'Malay'], zh: ['英语', '华语', '马来语'] }
+  LANGUAGES: { en: ['English', 'Mandarin', 'Malay'], zh: ['英语', '华语', '马来语'] },
+  RESUME: {
+    summary: {
+      en: 'Business Information Systems undergraduate with hands-on experience in web development, system design, data security, and technical operations. Independently developed EdenAtlas and worked with modern web, database, and testing technologies. Experienced in supporting enterprise AI platform workflows and campus event leadership.',
+      zh: '商业信息系统本科生，具备网页开发、系统设计、数据安全与技术运营的实践经验。独立开发 EdenAtlas，并使用网页、数据库及测试技术。曾参与企业 AI 平台工作流程及校园活动领导工作。'
+    },
+    experienceBullets: {
+      en: [
+        'Improved production eKYC review workflows, including review discussions, configurable fraud analysis, and data export.',
+        'Standardised classification workflows, supported database migration and historical record repair, and validated API-to-dashboard consistency.',
+        'Improved large CSV synchronisation through file-status tracking, incremental processing, and database indexing optimisation.',
+        'Developed and troubleshot AutoML and Talkbot functionality using Django REST Framework, Vue.js, PostgreSQL, Redis/Celery, and MinIO.',
+        'Built Playwright staging E2E coverage for authentication, dataset upload, training, deployment, and inference, while supporting data annotation and quality control.'
+      ],
+      zh: [
+        '改善生产环境的 eKYC 审核流程，包括审核讨论、可配置的欺诈分析及数据导出。',
+        '统一分类工作流程，协助数据库迁移与历史记录修复，并验证 API 至仪表板的数据一致性。',
+        '通过文件状态追踪、增量处理和数据库索引优化，改善大型 CSV 同步。',
+        '使用 Django REST Framework、Vue.js、PostgreSQL、Redis/Celery 与 MinIO 开发及排查 AutoML 和 Talkbot 功能。',
+        '使用 Playwright 为测试环境的身份验证、数据集上传、训练、部署与推理建立端到端测试，并协助数据标注及品质控制。'
+      ]
+    },
+    projectTechnologies: {
+      edenatlas: ['HTML', 'CSS', 'JavaScript', 'PWA', 'Firebase'],
+      'utar-epms': ['System Analysis', 'Database Design', 'Web'],
+      'enterprise-ai-ops': ['TypeScript', 'Django REST', 'Vue 3', 'PostgreSQL', 'Redis', 'Celery', 'Playwright']
+    },
+    skills: {
+      programming: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'Python', 'SQL'],
+      platforms: ['Vue.js', 'Django REST Framework', 'Firebase', 'PostgreSQL', 'Redis', 'Celery', 'MinIO'],
+      tools: ['Git', 'GitHub', 'Docker', 'Playwright', 'API Testing', 'Database Migration', 'E2E Testing']
+    }
+  }
 };

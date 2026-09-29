@@ -13,6 +13,7 @@
       emailMe: 'Email me', seeAll: 'See all projects', caseStudy: 'View Case Study',
       selectedWork: 'Selected work', projectIntro: 'Three projects across independent development, coursework, and internship work.',
       profile: 'Profile', relevantCourses: 'Relevant coursework', print: 'Print / Save PDF',
+      professionalSummary: 'Professional Summary', selectedProjects: 'Selected Projects', technicalSkills: 'Technical Skills', frameworks: 'Frameworks / Platforms',
       curriculum: 'Curriculum vitae', cgpa: 'CGPA', phone: 'Phone',
       overview: 'Overview', problem: 'Problem', role: 'Role', investigation: 'Investigation',
       solution: 'Solution', result: 'Result', learned: 'What I Learned', technology: 'Technology / Skills',
@@ -30,6 +31,7 @@
       emailMe: '发送邮件', seeAll: '查看所有项目', caseStudy: '查看案例',
       selectedWork: '精选作品', projectIntro: '涵盖独立开发、课程项目与实习工作的三个项目。',
       profile: '个人简介', relevantCourses: '相关课程', print: '打印 / 保存 PDF',
+      professionalSummary: '职业简介', selectedProjects: '精选项目', technicalSkills: '技术技能', frameworks: '框架 / 平台',
       curriculum: '正式履历', cgpa: 'CGPA', phone: '电话',
       overview: '概览', problem: '问题', role: '职责', investigation: '研究过程',
       solution: '解决方案', result: '成果', learned: '所学经验', technology: '技术 / 技能',
@@ -86,13 +88,22 @@
   }
   function renderResume() {
     const profile = data.PROFILE;
-    return `<div class="container resume-shell"><div class="resume-toolbar"><span class="eyebrow">${t('curriculum')}</span><button class="button button-secondary print-button" type="button" id="print-resume">${t('print')} <span aria-hidden="true">↗</span></button></div><article class="resume-paper"><header class="resume-head"><div><p class="eyebrow">${safe(profile.displayName)}</p><h1>${escapeHtml(profile.name)}</h1><p class="resume-title">${safe(profile.title)}</p></div><div class="resume-contact"><span>${safe(profile.location)}</span><a href="mailto:${escapeHtml(profile.email)}">${escapeHtml(profile.email)}</a>${profile.showPhone ? `<a href="tel:${escapeHtml(profile.phone.replace(/[^+\d]/g, ''))}">${escapeHtml(profile.phone)}</a>` : ''}<a href="${escapeHtml(profile.github)}" target="_blank" rel="noopener noreferrer">${escapeHtml(profile.github)}</a></div></header>
-      ${section('profile', t('profile'), `<p class="resume-summary">${safe(profile.summary)}</p>`)}
-      ${section('education', t('education'), educationCards())}
-      ${section('experience', t('experience'), data.EXPERIENCE.map(item => experienceCard(item)).join(''))}
-      ${section('projects', t('projects'), `<div class="resume-projects">${data.PROJECTS.map(project => `<article class="resume-project"><div class="entry-head"><h3><a href="${projectHref(project)}">${escapeHtml(project.name)}</a></h3><span class="entry-date">${safe(project.category)}</span></div><p>${safe(project.short)}</p><p class="small muted">${safe(project.role)}</p></article>`).join('')}</div>`)}
-      ${section('leadership', t('leadership'), leadershipCards(data.LEADERSHIP))}
-      ${section('skills', t('skills'), skillsGrid(true))}
+    const resume = data.RESUME;
+    const cvSection = (id, title, content) => `<section class="cv-section" aria-labelledby="cv-${id}"><h2 id="cv-${id}" class="cv-section-title">${title}</h2>${content}</section>`;
+    const education = data.EDUCATION.map(item => `<div class="cv-education-row"><div class="cv-row-heading"><h3>${safe(item.school)}</h3><span>${escapeHtml(item.period)} · ${t('cgpa')} ${escapeHtml(item.cgpa)}</span></div><p>${safe(item.degree)}</p>${item.coursework ? `<p class="cv-courses">${t('relevantCourses')}: ${item.coursework[language].map(escapeHtml).join(' · ')}</p>` : ''}</div>`).join('');
+    const experience = data.EXPERIENCE.map(item => `<div class="cv-experience"><div class="cv-row-heading"><h3>${safe(item.role)}</h3><span>${safe(item.period)}</span></div><p class="cv-subline">${safe(item.company)} · ${safe(item.location)}</p><ul class="cv-bullets">${resume.experienceBullets[language].map(bullet => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul></div>`).join('');
+    const projects = data.PROJECTS.map(project => `<div class="cv-project-row"><div class="cv-row-heading"><h3>${escapeHtml(project.name)}</h3><span>${safe(project.category)}</span></div><p>${resume.projectTechnologies[project.slug].map(escapeHtml).join(' · ')}</p></div>`).join('');
+    const featuredLeader = data.LEADERSHIP[0];
+    const leadership = `<div class="cv-lead"><div class="cv-row-heading"><h3>${safe(featuredLeader.role)} — ${safe(featuredLeader.event)}</h3><span>${safe(featuredLeader.period)}</span></div><p>${safe(featuredLeader.detail)}</p></div><ul class="cv-lead-list">${data.LEADERSHIP.slice(1).map(item => `<li><strong>${safe(item.role)}</strong> — ${safe(item.event)}${item.period && !String(value(item.event)).includes(String(value(item.period))) ? `, ${safe(item.period)}` : ''}</li>`).join('')}</ul>`;
+    const skillRows = [['programming', resume.skills.programming], ['frameworks', resume.skills.platforms], ['tools', resume.skills.tools], ['languages', data.LANGUAGES[language]]];
+    const skills = `<dl class="cv-skills">${skillRows.map(([label, items]) => `<div><dt>${t(label)}</dt><dd>${items.map(escapeHtml).join(', ')}</dd></div>`).join('')}</dl>`;
+    return `<div class="resume-shell"><div class="resume-toolbar container"><span>${t('curriculum')}</span><button class="button button-secondary print-button" type="button" id="print-resume">${t('print')}</button></div><article class="resume-page" aria-label="${t('curriculum')}"><header class="cv-header"><h1>${escapeHtml(profile.name)}</h1><p class="cv-title">${safe(profile.title)}</p><address class="cv-contact"><span>${safe(profile.location)}</span><a href="mailto:${escapeHtml(profile.email)}">${escapeHtml(profile.email)}</a>${profile.showPhone ? `<a href="tel:${escapeHtml(profile.phone.replace(/[^+\d]/g, ''))}">${escapeHtml(profile.phone)}</a>` : ''}<a href="${escapeHtml(profile.github)}" target="_blank" rel="noopener noreferrer">${escapeHtml(profile.github.replace(/^https?:\/\//, ''))}</a></address></header>
+      ${cvSection('summary', t('professionalSummary'), `<p>${safe(resume.summary)}</p>`)}
+      ${cvSection('education', t('education'), education)}
+      ${cvSection('experience', t('experience'), experience)}
+      ${cvSection('projects', t('selectedProjects'), projects)}
+      ${cvSection('leadership', t('leadership'), leadership)}
+      ${cvSection('skills', t('technicalSkills'), skills)}
     </article></div>`;
   }
   function renderHeader() {
@@ -100,11 +111,15 @@
     document.getElementById('site-header').innerHTML = `<header class="site-header"><div class="container nav-inner"><a class="brand" href="./index.html" aria-label="${escapeHtml(data.PROFILE.name)} — ${t('home')}"><span class="brand-mark" aria-hidden="true">${escapeHtml(data.PROFILE.initials)}</span><span><strong>${escapeHtml(data.PROFILE.displayName)}</strong><small>${escapeHtml(data.PROFILE.name)}</small></span></a><button class="menu-toggle" type="button" aria-label="${t('menu')}" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button><nav id="primary-nav" class="primary-nav" aria-label="Primary"><a href="./index.html" ${active === 'home' ? 'aria-current="page"' : ''}>${t('home')}</a><a href="./projects.html" ${active === 'projects' ? 'aria-current="page"' : ''}>${t('projects')}</a><a href="./resume.html" ${active === 'resume' ? 'aria-current="page"' : ''}>${t('resume')}</a><a href="./index.html#contact">${t('contact')}</a><div class="language-switch" role="group" aria-label="Language"><button type="button" data-language="en" aria-pressed="${language === 'en'}">EN</button><span aria-hidden="true">/</span><button type="button" data-language="zh" aria-pressed="${language === 'zh'}">中文</button></div></nav></div></header>`;
   }
   function renderFooter() {
-    document.getElementById('site-footer').innerHTML = `<footer class="site-footer"><div class="container footer-inner"><span>© ${new Date().getFullYear()} ${escapeHtml(data.PROFILE.name)}</span><span>${t('footer')}</span><a href="mailto:${escapeHtml(data.PROFILE.email)}">${escapeHtml(data.PROFILE.email)}</a></div></footer>`;
+    document.getElementById('site-footer').innerHTML = page === 'resume' ? '' : `<footer class="site-footer"><div class="container footer-inner"><span>© ${new Date().getFullYear()} ${escapeHtml(data.PROFILE.name)}</span><span>${t('footer')}</span><a href="mailto:${escapeHtml(data.PROFILE.email)}">${escapeHtml(data.PROFILE.email)}</a></div></footer>`;
   }
-  function render() {
+  function render(menuOpen = false, focusLanguage = false) {
     document.documentElement.lang = language === 'zh' ? 'zh-Hans' : 'en';
     renderHeader();
+    if (menuOpen) {
+      document.querySelector('.menu-toggle').setAttribute('aria-expanded', 'true');
+      document.getElementById('primary-nav').classList.add('is-open');
+    }
     const main = document.getElementById('main');
     main.innerHTML = page === 'home' ? renderHome() : page === 'projects' ? renderProjects() : page === 'resume' ? renderResume() : window.renderProjectPage({ data, language, t, safe, escapeHtml, tags, projectHref });
     renderFooter();
@@ -116,10 +131,12 @@
       document.getElementById('primary-nav').classList.toggle('is-open', open);
     });
     document.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => {
+      const wasOpen = document.querySelector('.menu-toggle').getAttribute('aria-expanded') === 'true';
       language = button.dataset.language;
       try { localStorage.setItem('resume-language', language); } catch { /* file browsers may block storage */ }
-      render();
+      render(wasOpen, true);
     }));
+    if (focusLanguage) document.querySelector(`[data-language="${language}"]`)?.focus();
   }
   render();
 })();

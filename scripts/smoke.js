@@ -54,7 +54,10 @@ assert.match(load('project', 'missing').main.innerHTML, /Project not found/);
 const resume = load('resume').main.innerHTML;
 assert.match(resume, /011-10574969/);
 assert.match(resume, /Warrior 3\.0/);
-assert.equal((resume.match(/class="resume-project"/g) || []).length, 3);
+assert.match(resume, /class="resume-page"/);
+assert.match(resume, /Professional Summary/);
+assert.equal((resume.match(/class="cv-project-row"/g) || []).length, 3);
+assert.doesNotMatch(resume, /class="project-card"/);
 for (const html of ['index.html', 'projects.html', 'project.html', 'resume.html']) {
   const source = read(html);
   for (const match of source.matchAll(/(?:src|href)="(\.\/[^"#?]+)"/g)) {

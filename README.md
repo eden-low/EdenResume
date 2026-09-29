@@ -23,6 +23,10 @@ If Node.js is available, `node scripts/smoke.js` checks page rendering, language
 
 The language switch saves `en` or `zh` under the `resume-language` key in local storage. English is the default. To hide the phone number everywhere, set `PROFILE.showPhone` to `false` in `assets/js/data.js`.
 
+## Portfolio and professional resume
+
+`index.html`, `projects.html`, and `project.html` are the bilingual portfolio: they retain detailed project stories and the dark site design. `resume.html` is a separate, compact job application document. Its A4 layout and print rules are in `assets/css/resume.css`; the print button uses the browser's print dialog. The shorter resume copy is stored alongside the full portfolio facts in `assets/js/data.js` under `RESUME`.
+
 ## Deployment
 
 Create an empty GitHub repository, then run the commands below from this folder. Replace `<your-repository-url>` with the repository URL you create:
