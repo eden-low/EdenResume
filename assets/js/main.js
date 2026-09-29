@@ -4,7 +4,7 @@
   const page = document.body.dataset.page;
   const ui = {
     en: {
-      home: 'Home', projects: 'Projects', resume: 'Resume', contact: 'Contact', menu: 'Open navigation menu',
+      home: 'Home', projects: 'Projects', resume: 'Resume', cv: 'CV', contact: 'Contact', menu: 'Open navigation menu',
       intro: 'Personal portfolio', viewProjects: 'View Projects', viewResume: 'View Resume', github: 'GitHub',
       about: 'About / Snapshot', featured: 'Featured Projects', allProjects: 'All Projects', experience: 'Experience',
       leadership: 'Leadership', skills: 'Skills', education: 'Education', languages: 'Languages',
@@ -13,7 +13,7 @@
       emailMe: 'Email me', seeAll: 'See all projects', caseStudy: 'View Case Study',
       selectedWork: 'Selected work', projectIntro: 'Three projects across independent development, coursework, and internship work.',
       profile: 'Profile', relevantCourses: 'Relevant coursework', print: 'Print / Save PDF',
-      professionalSummary: 'Professional Summary', selectedProjects: 'Selected Projects', technicalSkills: 'Technical Skills', frameworks: 'Frameworks / Platforms',
+      professionalSummary: 'Professional Summary', selectedProjects: 'Selected Projects', projectsContinued: 'Selected Projects (continued)', technicalSkills: 'Technical Skills', frameworks: 'Frameworks / Platforms',
       curriculum: 'Curriculum vitae', cgpa: 'CGPA', phone: 'Phone',
       overview: 'Overview', problem: 'Problem', role: 'Role', investigation: 'Investigation',
       solution: 'Solution', result: 'Result', learned: 'What I Learned', technology: 'Technology / Skills',
@@ -22,7 +22,7 @@
       footer: 'Portfolio & resume'
     },
     zh: {
-      home: '首页', projects: '项目', resume: '履历', contact: '联系', menu: '打开导航菜单',
+      home: '首页', projects: '项目', resume: '简历', cv: '完整履历', contact: '联系', menu: '打开导航菜单',
       intro: '个人作品集', viewProjects: '查看项目', viewResume: '查看履历', github: 'GitHub',
       about: '关于 / 简介', featured: '精选项目', allProjects: '所有项目', experience: '工作经历',
       leadership: '领导经历', skills: '技能', education: '教育经历', languages: '语言',
@@ -31,7 +31,7 @@
       emailMe: '发送邮件', seeAll: '查看所有项目', caseStudy: '查看案例',
       selectedWork: '精选作品', projectIntro: '涵盖独立开发、课程项目与实习工作的三个项目。',
       profile: '个人简介', relevantCourses: '相关课程', print: '打印 / 保存 PDF',
-      professionalSummary: '职业简介', selectedProjects: '精选项目', technicalSkills: '技术技能', frameworks: '框架 / 平台',
+      professionalSummary: '职业简介', selectedProjects: '精选项目', projectsContinued: '精选项目（续）', technicalSkills: '技术技能', frameworks: '框架 / 平台',
       curriculum: '正式履历', cgpa: 'CGPA', phone: '电话',
       overview: '概览', problem: '问题', role: '职责', investigation: '研究过程',
       solution: '解决方案', result: '成果', learned: '所学经验', technology: '技术 / 技能',
@@ -108,10 +108,10 @@
   }
   function renderHeader() {
     const active = page === 'project' ? 'projects' : page;
-    document.getElementById('site-header').innerHTML = `<header class="site-header"><div class="container nav-inner"><a class="brand" href="./index.html" aria-label="${escapeHtml(data.PROFILE.name)} — ${t('home')}"><span class="brand-mark" aria-hidden="true">${escapeHtml(data.PROFILE.initials)}</span><span><strong>${escapeHtml(data.PROFILE.displayName)}</strong><small>${escapeHtml(data.PROFILE.name)}</small></span></a><button class="menu-toggle" type="button" aria-label="${t('menu')}" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button><nav id="primary-nav" class="primary-nav" aria-label="Primary"><a href="./index.html" ${active === 'home' ? 'aria-current="page"' : ''}>${t('home')}</a><a href="./projects.html" ${active === 'projects' ? 'aria-current="page"' : ''}>${t('projects')}</a><a href="./resume.html" ${active === 'resume' ? 'aria-current="page"' : ''}>${t('resume')}</a><a href="./index.html#contact">${t('contact')}</a><div class="language-switch" role="group" aria-label="Language"><button type="button" data-language="en" aria-pressed="${language === 'en'}">EN</button><span aria-hidden="true">/</span><button type="button" data-language="zh" aria-pressed="${language === 'zh'}">中文</button></div></nav></div></header>`;
+    document.getElementById('site-header').innerHTML = `<header class="site-header"><div class="container nav-inner"><a class="brand" href="./index.html" aria-label="${escapeHtml(data.PROFILE.name)} — ${t('home')}"><span class="brand-mark" aria-hidden="true">${escapeHtml(data.PROFILE.initials)}</span><span><strong>${escapeHtml(data.PROFILE.displayName)}</strong><small>${escapeHtml(data.PROFILE.name)}</small></span></a><button class="menu-toggle" type="button" aria-label="${t('menu')}" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button><nav id="primary-nav" class="primary-nav" aria-label="Primary"><a href="./index.html" ${active === 'home' ? 'aria-current="page"' : ''}>${t('home')}</a><a href="./projects.html" ${active === 'projects' ? 'aria-current="page"' : ''}>${t('projects')}</a><a href="./resume.html" ${active === 'resume' ? 'aria-current="page"' : ''}>${t('resume')}</a><a href="./cv.html" ${active === 'cv' ? 'aria-current="page"' : ''}>${t('cv')}</a><a href="./index.html#contact">${t('contact')}</a><div class="language-switch" role="group" aria-label="Language"><button type="button" data-language="en" aria-pressed="${language === 'en'}">EN</button><span aria-hidden="true">/</span><button type="button" data-language="zh" aria-pressed="${language === 'zh'}">中文</button></div></nav></div></header>`;
   }
   function renderFooter() {
-    document.getElementById('site-footer').innerHTML = page === 'resume' ? '' : `<footer class="site-footer"><div class="container footer-inner"><span>© ${new Date().getFullYear()} ${escapeHtml(data.PROFILE.name)}</span><span>${t('footer')}</span><a href="mailto:${escapeHtml(data.PROFILE.email)}">${escapeHtml(data.PROFILE.email)}</a></div></footer>`;
+    document.getElementById('site-footer').innerHTML = page === 'resume' || page === 'cv' ? '' : `<footer class="site-footer"><div class="container footer-inner"><span>© ${new Date().getFullYear()} ${escapeHtml(data.PROFILE.name)}</span><span>${t('footer')}</span><a href="mailto:${escapeHtml(data.PROFILE.email)}">${escapeHtml(data.PROFILE.email)}</a></div></footer>`;
   }
   function render(menuOpen = false, focusLanguage = false) {
     document.documentElement.lang = language === 'zh' ? 'zh-Hans' : 'en';
@@ -121,7 +121,7 @@
       document.getElementById('primary-nav').classList.add('is-open');
     }
     const main = document.getElementById('main');
-    main.innerHTML = page === 'home' ? renderHome() : page === 'projects' ? renderProjects() : page === 'resume' ? renderResume() : window.renderProjectPage({ data, language, t, safe, escapeHtml, tags, projectHref });
+    main.innerHTML = page === 'home' ? renderHome() : page === 'projects' ? renderProjects() : page === 'resume' ? renderResume() : page === 'cv' ? window.renderCVPage({ data, language, t, safe, escapeHtml, value }) : window.renderProjectPage({ data, language, t, safe, escapeHtml, tags, projectHref });
     renderFooter();
     document.getElementById('print-resume')?.addEventListener('click', () => window.print());
     document.querySelector('.menu-toggle').addEventListener('click', event => {

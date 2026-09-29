@@ -6,10 +6,11 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
-const script = ['assets/js/data.js', 'assets/js/project.js', 'assets/js/main.js'];
+const script = ['assets/js/data.js', 'assets/js/project.js', 'assets/js/cv.js', 'assets/js/main.js'];
 const dataSource = read(script[0]);
 const projectSource = read(script[1]);
-const mainSource = read(script[2]);
+const cvSource = read(script[2]);
+const mainSource = read(script[3]);
 
 function load(page, slug = '') {
   const elements = new Map();
@@ -30,14 +31,16 @@ function load(page, slug = '') {
   vm.createContext(context);
   vm.runInContext(dataSource, context);
   if (page === 'project') vm.runInContext(projectSource, context);
+  if (page === 'cv') vm.runInContext(cvSource, context);
   vm.runInContext(mainSource, context);
   return { main: element('main'), header: element('site-header'), buttons, document, storage };
 }
 
-for (const page of ['home', 'projects', 'resume']) {
+for (const page of ['home', 'projects', 'resume', 'cv']) {
   const view = load(page);
   assert.match(view.main.innerHTML, /Low Fang Jun|EdenAtlas/);
   assert.match(view.header.innerHTML, /resume\.html/);
+  assert.match(view.header.innerHTML, /cv\.html/);
   view.buttons[1].listeners.click();
   assert.equal(view.document.documentElement.lang, 'zh-Hans');
   assert.equal(view.storage.get('resume-language'), 'zh');
@@ -58,10 +61,15 @@ assert.match(resume, /class="resume-page"/);
 assert.match(resume, /Professional Summary/);
 assert.equal((resume.match(/class="cv-project-row"/g) || []).length, 3);
 assert.doesNotMatch(resume, /class="project-card"/);
-for (const html of ['index.html', 'projects.html', 'project.html', 'resume.html']) {
+const cv = load('cv').main.innerHTML;
+assert.equal((cv.match(/class="resume-page cv-page"/g) || []).length, 2);
+assert.equal((cv.match(/class="cv-project-entry"/g) || []).length, 3);
+assert.equal((cv.match(/class="cv-activity"/g) || []).length, 6);
+assert.match(cv, /document tampering/);
+for (const html of ['index.html', 'projects.html', 'project.html', 'resume.html', 'cv.html']) {
   const source = read(html);
   for (const match of source.matchAll(/(?:src|href)="(\.\/[^"#?]+)"/g)) {
     assert.ok(fs.existsSync(path.join(root, match[1])), `${html}: missing ${match[1]}`);
   }
 }
-console.log('Smoke checks passed: pages, languages, project slugs, links, and resume content.');
+console.log('Smoke checks passed: portfolio, resume, CV, languages, project slugs, and links.');

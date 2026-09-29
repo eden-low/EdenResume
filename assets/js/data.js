@@ -88,6 +88,42 @@ window.RESUME_DATA = {
     soft: { en: ['Leadership', 'Communication', 'Documentation', 'Coordination'], zh: ['领导力', '沟通', '文档撰写', '协调'] }
   },
   LANGUAGES: { en: ['English', 'Mandarin', 'Malay'], zh: ['英语', '华语', '马来语'] },
+  CV: {
+    summary: {
+      en: 'Business Information Systems undergraduate at UTAR with interests and practical experience in system design, data security, web programming, and software development. Independently developed EdenAtlas and has worked with HTML, CSS, JavaScript, Python, and SQL. Also supported technical and operational work at an AI technology company and led a university event involving approximately 300 freshmen.',
+      zh: '拉曼大学商业信息系统本科生，具备系统设计、数据安全、网页编程与软件开发的学习和实践经验。独立开发 EdenAtlas，并有使用 HTML、CSS、JavaScript、Python 与 SQL 的经验。亦曾在 AI technology company 参与技术与运营工作，并领导涉及约 300 名新生的大学活动。'
+    },
+    projectHighlights: {
+      edenatlas: {
+        en: [
+          'Independently designed a private platform bringing memories, diaries, career information, and daily records together.',
+          'Used authentication and access controls to manage access to personal content.'
+        ],
+        zh: [
+          '独立设计私人平台，集中管理回忆、日记、职业信息及日常记录。',
+          '使用身份验证与权限控制管理个人内容的访问。'
+        ]
+      },
+      'utar-epms': {
+        en: [
+          'Structured event proposal, approval, and planning workflows.'
+        ],
+        zh: [
+          '将活动提案、审批与策划工作流程结构化。'
+        ]
+      },
+      'enterprise-ai-ops': {
+        en: [
+          'Improved review discussions, configurable classification, filtering, and reporting workflows.',
+          'Supported incremental CSV synchronisation and AutoML and Talkbot workflow improvements.'
+        ],
+        zh: [
+          '改善审核讨论、可配置分类、筛选与报表工作流程。',
+          '协助增量 CSV 同步及 AutoML 与 Talkbot 工作流程改进。'
+        ]
+      }
+    }
+  },
   RESUME: {
     summary: {
       en: 'Business Information Systems undergraduate with hands-on experience in web development, system design, data security, and technical operations. Independently developed EdenAtlas and worked with modern web, database, and testing technologies. Experienced in supporting enterprise AI platform workflows and campus event leadership.',

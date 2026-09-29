@@ -12,6 +12,7 @@ HTML5, CSS3, and vanilla JavaScript. No build step, backend, database, CDN, or e
 - Bilingual English / Chinese
 - Three project case studies
 - Printable A4 resume
+- Printable bilingual CV
 - GitHub Pages compatible
 - No backend required
 
@@ -25,7 +26,7 @@ The language switch saves `en` or `zh` under the `resume-language` key in local 
 
 ## Portfolio and professional resume
 
-`index.html`, `projects.html`, and `project.html` are the bilingual portfolio: they retain detailed project stories and the dark site design. `resume.html` is a separate, compact job application document. Its A4 layout and print rules are in `assets/css/resume.css`; the print button uses the browser's print dialog. The shorter resume copy is stored alongside the full portfolio facts in `assets/js/data.js` under `RESUME`.
+`index.html`, `projects.html`, and `project.html` are the bilingual portfolio: they retain detailed project stories and the dark site design. `resume.html` is a concise, one-page A4 job application document. `cv.html` is a detailed, two-page A4 professional record. Both documents share `assets/css/resume.css` and the browser print dialog. Their editorial copy and the public facts remain in `assets/js/data.js`.
 
 ## Deployment
 
