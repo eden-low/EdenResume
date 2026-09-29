@@ -1,0 +1,51 @@
+/* Project workspace uses the portfolio tokens and components. */
+.manager-page { max-width: var(--content-width); }
+.manager-page .page-intro { padding-bottom: 24px; }
+.manager-local-note, .manager-note { padding: 13px 17px; border-left: 3px solid var(--color-accent); background: var(--color-surface); color: var(--color-muted); font-size: .88rem; }
+.manager-panel { margin-top: 28px; padding: clamp(20px, 3vw, 32px); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.manager-panel h2 { margin: 0; font-size: 1.35rem; letter-spacing: -.03em; }
+.manager-section-head { margin-bottom: 22px; }
+.manager-section-head p { margin: 7px 0 0; color: var(--color-muted); font-size: .88rem; }
+.manager-sync { display: flex; align-items: end; gap: 12px; }
+.manager-sync .manager-field { width: min(100%, 320px); }
+.manager-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; color: var(--color-text); font-size: .81rem; font-weight: 650; }
+.manager-field input, .manager-field textarea, .manager-field select { width: 100%; min-width: 0; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-text); font: 400 .9rem/1.45 system-ui, sans-serif; }
+.manager-field textarea { resize: vertical; }
+.manager-field input:hover, .manager-field textarea:hover, .manager-field select:hover { border-color: var(--color-muted); }
+.manager-feedback { margin: 20px 0 0; padding: 16px; border: 1px dashed var(--color-border); border-radius: var(--radius-sm); color: var(--color-muted); font-size: .88rem; }
+.manager-error { border-color: #d79090; color: #f0bbbb; }
+.manager-repo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 22px; }
+.manager-repo { min-width: 0; padding: 20px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); overflow-wrap: anywhere; }
+.manager-repo h3, .manager-saved-card h3 { margin: 12px 0 8px; font-size: 1.1rem; line-height: 1.3; }
+.manager-repo > p { margin: 0 0 13px; color: var(--color-muted); font-size: .87rem; }
+.manager-meta { display: flex; flex-wrap: wrap; gap: 4px 15px; margin-bottom: 15px; color: var(--color-muted); font-size: .76rem; }
+.manager-repo .tag-list { margin-bottom: 15px; }
+.manager-archive, .manager-status { color: var(--color-muted); font-size: .75rem; }
+.manager-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 9px 14px; margin-top: 17px; }
+.manager-actions .button { min-height: 37px; padding: 7px 11px; }
+.manager-readme { max-height: 360px; overflow: auto; margin: 0; padding: 16px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-muted); white-space: pre-wrap; overflow-wrap: anywhere; font: .78rem/1.5 ui-monospace, Consolas, monospace; }
+.manager-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.manager-form-grid .manager-field:has(textarea) { grid-column: span 2; }
+.manager-choices { display: flex; align-items: end; flex-wrap: wrap; gap: 12px 22px; margin-top: 19px; padding-top: 17px; border-top: 1px solid var(--color-border); }
+.manager-check { display: inline-flex; align-items: center; gap: 9px; color: var(--color-text); font-size: .82rem; cursor: pointer; }
+.manager-check input { width: 17px; height: 17px; margin: 0; accent-color: var(--color-accent); }
+.manager-priority { width: 120px; }
+.manager-saved-list { display: grid; gap: 12px; }
+.manager-saved-card { min-width: 0; padding: 18px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); }
+.manager-saved-head { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.manager-saved-card h3 { margin-bottom: 0; }
+.manager-reset { margin-top: 19px; }
+@media (max-width: 700px) {
+  .manager-repo-grid, .manager-form-grid { grid-template-columns: 1fr; }
+  .manager-form-grid .manager-field:has(textarea) { grid-column: auto; }
+  .manager-sync { align-items: stretch; flex-direction: column; }
+  .manager-sync .manager-field { width: 100%; }
+  .manager-sync .button { align-self: flex-start; }
+}
+@media (max-width: 420px) {
+  .manager-panel { padding: 18px; }
+  .manager-saved-head { flex-direction: column; }
+  .manager-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .manager-check { grid-column: 1 / -1; }
+  .manager-priority { width: 100%; }
+}

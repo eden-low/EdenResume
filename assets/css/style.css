@@ -97,7 +97,8 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .project-card .tag-list { margin: 22px 0 24px; }
 .text-link { display: inline-flex; align-items: center; gap: 8px; width: max-content; max-width: 100%; color: var(--color-accent); font-size: .84rem; font-weight: 700; }
 .text-link:hover { color: var(--color-accent-hover); text-decoration: underline; text-underline-offset: 4px; }
-.project-card .text-link { margin-top: auto; }
+.project-links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin-top: auto; }
+.project-empty { padding: 24px; border: 1px solid var(--color-border); border-radius: var(--radius-md); color: var(--color-muted); }
 .section-tail { margin-top: 23px; text-align: right; }
 .section-tail .text-link { margin-left: auto; }
 .entry { padding: 25px 28px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }

@@ -42,7 +42,7 @@ window.RESUME_DATA = {
   PROJECTS: [
     {
       id: 'edenatlas', slug: 'edenatlas', name: 'EdenAtlas', category: { en: 'Personal Platform', zh: '个人平台' }, role: { en: 'Independent Designer & Developer', zh: '独立设计与开发' },
-      source: 'manual', visibility: 'historical', status: { en: 'Discontinued · archived case study', zh: '已停止维护 · 历史案例' }, githubUrl: null, liveUrl: null,
+      source: 'legacy', visibility: 'historical', status: 'archived', statusLabel: { en: 'Discontinued · archived case study', zh: '已停止维护 · 历史案例' }, githubUrl: null, liveUrl: null,
       includeInPortfolio: false, includeInResume: false, includeInCV: false, resumePriority: null, cvPriority: null,
       short: { en: 'A private personal platform bringing memories, journals, career, and everyday information together with access controls.', zh: '将回忆、日记、职业与日常信息集中管理，并设有权限控制的私人个人平台。' },
       overview: { en: 'Independently designed and developed EdenAtlas as a personal platform for different parts of everyday life.', zh: '独立设计与开发 EdenAtlas，将不同的日常生活内容整合在一个个人平台。' },
@@ -55,7 +55,7 @@ window.RESUME_DATA = {
     },
     {
       id: 'utar-epms', slug: 'utar-epms', name: 'UTAR Event Planning Management System', category: { en: 'Coursework', zh: '课程项目' }, role: { en: 'Requirements analysis, system and database design, and core module implementation', zh: '参与需求分析、系统与数据库设计及核心模块实现' },
-      source: 'manual', visibility: 'public', status: { en: 'Coursework', zh: '课程项目' }, githubUrl: null, liveUrl: null,
+      source: 'manual', visibility: 'public', status: 'active', statusLabel: { en: 'Coursework', zh: '课程项目' }, githubUrl: null, liveUrl: null,
       includeInPortfolio: true, includeInResume: true, includeInCV: true, resumePriority: 2, cvPriority: 2,
       short: { en: 'Structured the event proposal, approval, and planning process.', zh: '将活动提案、审批与策划流程结构化。' },
       overview: { en: 'A coursework system for managing event planning processes at UTAR.', zh: '用于管理拉曼大学活动策划流程的课程项目。' },
@@ -68,7 +68,7 @@ window.RESUME_DATA = {
     },
     {
       id: 'enterprise-ai-ops', slug: 'enterprise-ai-ops', name: 'Enterprise AI Platform & Operations Improvements', category: { en: 'Internship', zh: '实习项目' }, role: { en: 'Technical and operations improvements', zh: '技术与运营改进' },
-      source: 'company', visibility: 'public-summary', status: { en: 'Internship work', zh: '实习工作' }, githubUrl: null, liveUrl: null,
+      source: 'company', visibility: 'public-summary', status: 'active', statusLabel: { en: 'Internship work', zh: '实习工作' }, githubUrl: null, liveUrl: null,
       includeInPortfolio: true, includeInResume: true, includeInCV: true, resumePriority: 1, cvPriority: 1,
       short: { en: 'Improved review, data synchronisation, classification, reporting, and AI workflows in an enterprise platform.', zh: '改善企业平台中的审核、数据同步、分类、报表与 AI 工作流程。' },
       overview: { en: 'Internship work across enterprise AI platform functions and operational workflows. The employer and internal details remain anonymous.', zh: '实习期间参与企业 AI 平台功能及运营流程改进；雇主与内部细节保持匿名。' },
