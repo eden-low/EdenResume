@@ -69,7 +69,7 @@
   // To change the password, generate a SHA-256 hex digest in the browser console:
   // crypto.subtle.digest('SHA-256', new TextEncoder().encode(prompt('New password'))).then(bytes => console.log(Array.from(new Uint8Array(bytes), byte => byte.toString(16).padStart(2, '0')).join('')))
   // Replace only this hash; never commit the password itself. This is a client-side UI gate, not server authentication.
-  const PASSWORD_SHA256 = '2ff3ec560c6d5f176a22eeee871639a4b53b1e5db291ff7e5a314519a0f5728a';
+  const PASSWORD_SHA256 = 'df6d1181353697e4f4c1e5e54b4218545c3fb52be47fd218a934a7bb09e281a4';
   let unlocked = false;
   try { unlocked = sessionStorage.getItem(AUTH_KEY) === 'true'; } catch { /* Storage may be unavailable in file browsers. */ }
   let gateError = '';
