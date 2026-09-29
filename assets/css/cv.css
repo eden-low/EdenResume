@@ -1,0 +1,27 @@
+/* CV shares the Resume typography, while its content flows across A4 pages. */
+.cv-shell .cv-page { padding-bottom: 12mm; }
+.cv-page .cv-header,
+.cv-page .cv-education-row,
+.cv-page .cv-project-entry,
+.cv-page .cv-activity,
+.cv-page .cv-skills > div { break-inside: avoid; page-break-inside: avoid; }
+.cv-page .cv-section-title { break-after: avoid; page-break-after: avoid; }
+.cv-page #section-leadership,
+.cv-page #section-skills { break-inside: avoid; page-break-inside: avoid; }
+@page { size: A4; margin: 12mm; background: #fff; }
+@media print {
+  html { color-scheme: light !important; }
+  html, body { width: auto !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; background: #fff !important; }
+  body[data-page="cv"]::before,
+  body[data-page="cv"] .site-header,
+  body[data-page="cv"] .site-footer,
+  body[data-page="cv"] .skip-link,
+  body[data-page="cv"] .resume-toolbar { display: none !important; }
+  body[data-page="cv"] .site-main { min-height: 0 !important; margin: 0 !important; padding: 0 !important; background: #fff !important; }
+  body[data-page="cv"] .resume-shell { width: auto !important; margin: 0 !important; padding: 0 !important; }
+  body[data-page="cv"] .resume-page { width: auto !important; max-width: none !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; break-inside: auto !important; page-break-inside: auto !important; }
+  body[data-page="cv"] .cv-section { break-inside: auto; page-break-inside: auto; }
+  body[data-page="cv"] .cv-section-title { break-inside: avoid; page-break-after: avoid; }
+  body[data-page="cv"] .cv-experience { break-inside: auto; page-break-inside: auto; }
+  body[data-page="cv"] .cv-bullets li { break-inside: avoid; page-break-inside: avoid; }
+}

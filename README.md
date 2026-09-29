@@ -10,7 +10,7 @@ HTML5, CSS3, and vanilla JavaScript. No build step, backend, database, CDN, or e
 
 - Responsive portfolio
 - Bilingual English / Chinese
-- Three project case studies
+- Two selected project case studies, with an archived EdenAtlas case study still available by direct link
 - Printable A4 resume
 - Printable bilingual CV
 - GitHub Pages compatible
@@ -26,7 +26,7 @@ The language switch saves `en` or `zh` under the `resume-language` key in local 
 
 ## Portfolio and professional resume
 
-`index.html`, `projects.html`, and `project.html` are the bilingual portfolio: they retain detailed project stories and the dark site design. `resume.html` is a concise, one-page A4 job application document. `cv.html` is a detailed, two-page A4 professional record. Both documents share `assets/css/resume.css` and the browser print dialog. Their editorial copy and the public facts remain in `assets/js/data.js`.
+`index.html`, `projects.html`, and `project.html` are the bilingual portfolio. EdenAtlas is discontinued and no longer appears in selected work; its historical case study remains accessible by its direct link. `resume.html` is a concise, one-page A4 job application document. `cv.html` is a detailed professional record that paginates naturally on A4 when printed. Both documents share `assets/css/resume.css`; CV print rules live in `assets/css/cv.css`. Public facts and project visibility settings remain in `assets/js/data.js`.
 
 ## Deployment
 
@@ -45,4 +45,4 @@ In the GitHub repository, open **Settings → Pages**. Under **Build and deploym
 
 ## Content and privacy
 
-This site has no Firebase connection. Firebase technologies appear only as descriptions of EdenAtlas project work and skills. Do not place private records, employer or client information, credentials, API keys, or internal URLs in `assets/js/data.js` or other public files.
+This site has no Firebase connection. Firebase technologies appear only in the archived EdenAtlas case study and skills. Do not place private records, employer or client information, credentials, API keys, or internal URLs in `assets/js/data.js` or other public files.

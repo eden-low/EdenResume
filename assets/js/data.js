@@ -8,9 +8,10 @@ window.RESUME_DATA = {
     phone: '011-10574969', showPhone: true,
     availability: { en: 'Open to opportunities', zh: '开放求职机会' },
     opportunity: { en: 'Open to internship and graduate opportunities.', zh: '开放实习与毕业生职位机会。' },
+    positioning: { en: 'I work across web development, system design, and technical operations.', zh: '专注于网页开发、系统设计与技术运营。' },
     summary: {
-      en: 'Business Information Systems undergraduate with interests and hands-on experience in system design, data security, and web development. Independently developed EdenAtlas as a personal platform and worked with HTML, CSS, JavaScript, Python, and SQL. Also gained leadership experience through campus event organisation.',
-      zh: '商业信息系统本科生，具备系统设计、数据安全与网页开发方面的学习和实践经验。独立开发 EdenAtlas 个人平台，并使用 HTML、CSS、JavaScript、Python 与 SQL。也通过校园活动策划与组织累积领导经验。'
+      en: 'Business Information Systems undergraduate with hands-on experience in system design, data security, web development, and technical operations. I have worked with HTML, CSS, JavaScript, Python, and SQL, and gained leadership experience through campus event organisation.',
+      zh: '商业信息系统本科生，具备系统设计、数据安全、网页开发与技术运营方面的实践经验。曾使用 HTML、CSS、JavaScript、Python 与 SQL，并通过校园活动策划与组织累积领导经验。'
     }
   },
   EDUCATION: [
@@ -40,7 +41,9 @@ window.RESUME_DATA = {
   }],
   PROJECTS: [
     {
-      slug: 'edenatlas', name: 'EdenAtlas', category: { en: 'Personal Platform', zh: '个人平台' }, role: { en: 'Independent Designer & Developer', zh: '独立设计与开发' },
+      id: 'edenatlas', slug: 'edenatlas', name: 'EdenAtlas', category: { en: 'Personal Platform', zh: '个人平台' }, role: { en: 'Independent Designer & Developer', zh: '独立设计与开发' },
+      source: 'manual', visibility: 'historical', status: { en: 'Discontinued · archived case study', zh: '已停止维护 · 历史案例' }, githubUrl: null, liveUrl: null,
+      includeInPortfolio: false, includeInResume: false, includeInCV: false, resumePriority: null, cvPriority: null,
       short: { en: 'A private personal platform bringing memories, journals, career, and everyday information together with access controls.', zh: '将回忆、日记、职业与日常信息集中管理，并设有权限控制的私人个人平台。' },
       overview: { en: 'Independently designed and developed EdenAtlas as a personal platform for different parts of everyday life.', zh: '独立设计与开发 EdenAtlas，将不同的日常生活内容整合在一个个人平台。' },
       problem: { en: 'Memories, journals, career information, and everyday records needed a shared place with private access.', zh: '回忆、日记、职业信息和日常记录需要一个集中且有私人访问控制的空间。' },
@@ -51,7 +54,9 @@ window.RESUME_DATA = {
       technologies: ['HTML', 'CSS', 'JavaScript', 'PWA', 'Netlify Functions', 'Firebase Auth', 'Firestore', 'Firebase Storage']
     },
     {
-      slug: 'utar-epms', name: 'UTAR Event Planning Management System', category: { en: 'Coursework', zh: '课程项目' }, role: { en: 'Requirements analysis, system and database design, and core module implementation', zh: '参与需求分析、系统与数据库设计及核心模块实现' },
+      id: 'utar-epms', slug: 'utar-epms', name: 'UTAR Event Planning Management System', category: { en: 'Coursework', zh: '课程项目' }, role: { en: 'Requirements analysis, system and database design, and core module implementation', zh: '参与需求分析、系统与数据库设计及核心模块实现' },
+      source: 'manual', visibility: 'public', status: { en: 'Coursework', zh: '课程项目' }, githubUrl: null, liveUrl: null,
+      includeInPortfolio: true, includeInResume: true, includeInCV: true, resumePriority: 2, cvPriority: 2,
       short: { en: 'Structured the event proposal, approval, and planning process.', zh: '将活动提案、审批与策划流程结构化。' },
       overview: { en: 'A coursework system for managing event planning processes at UTAR.', zh: '用于管理拉曼大学活动策划流程的课程项目。' },
       problem: { en: 'Event proposals, approvals, and planning steps needed a clearer structure.', zh: '活动提案、审批和策划步骤需要更清晰的结构。' },
@@ -62,7 +67,9 @@ window.RESUME_DATA = {
       technologies: ['System Analysis', 'Database Design', 'Web']
     },
     {
-      slug: 'enterprise-ai-ops', name: 'Enterprise AI Platform & Operations Improvements', category: { en: 'Internship', zh: '实习项目' }, role: { en: 'Technical and operations improvements', zh: '技术与运营改进' },
+      id: 'enterprise-ai-ops', slug: 'enterprise-ai-ops', name: 'Enterprise AI Platform & Operations Improvements', category: { en: 'Internship', zh: '实习项目' }, role: { en: 'Technical and operations improvements', zh: '技术与运营改进' },
+      source: 'company', visibility: 'public-summary', status: { en: 'Internship work', zh: '实习工作' }, githubUrl: null, liveUrl: null,
+      includeInPortfolio: true, includeInResume: true, includeInCV: true, resumePriority: 1, cvPriority: 1,
       short: { en: 'Improved review, data synchronisation, classification, reporting, and AI workflows in an enterprise platform.', zh: '改善企业平台中的审核、数据同步、分类、报表与 AI 工作流程。' },
       overview: { en: 'Internship work across enterprise AI platform functions and operational workflows. The employer and internal details remain anonymous.', zh: '实习期间参与企业 AI 平台功能及运营流程改进；雇主与内部细节保持匿名。' },
       problem: { en: 'Review, classification, large-file synchronisation, and AI workflows needed more consistent handling and validation.', zh: '审核、分类、大型文件同步及 AI 工作流程需要更一致的处理与验证。' },
@@ -90,8 +97,8 @@ window.RESUME_DATA = {
   LANGUAGES: { en: ['English', 'Mandarin', 'Malay'], zh: ['英语', '华语', '马来语'] },
   CV: {
     summary: {
-      en: 'Business Information Systems undergraduate at UTAR with interests and practical experience in system design, data security, web programming, and software development. Independently developed EdenAtlas and has worked with HTML, CSS, JavaScript, Python, and SQL. Also supported technical and operational work at an AI technology company and led a university event involving approximately 300 freshmen.',
-      zh: '拉曼大学商业信息系统本科生，具备系统设计、数据安全、网页编程与软件开发的学习和实践经验。独立开发 EdenAtlas，并有使用 HTML、CSS、JavaScript、Python 与 SQL 的经验。亦曾在 AI technology company 参与技术与运营工作，并领导涉及约 300 名新生的大学活动。'
+      en: 'Business Information Systems undergraduate at UTAR with practical experience in system design, data security, web programming, and software development. Worked with HTML, CSS, JavaScript, Python, and SQL; supported technical and operational work at an AI technology company; and led a university event involving approximately 300 freshmen.',
+      zh: '拉曼大学商业信息系统本科生，具备系统设计、数据安全、网页编程与软件开发的实践经验。曾使用 HTML、CSS、JavaScript、Python 与 SQL，在 AI technology company 参与技术与运营工作，并领导涉及约 300 名新生的大学活动。'
     },
     projectHighlights: {
       edenatlas: {
@@ -126,8 +133,8 @@ window.RESUME_DATA = {
   },
   RESUME: {
     summary: {
-      en: 'Business Information Systems undergraduate with hands-on experience in web development, system design, data security, and technical operations. Independently developed EdenAtlas and worked with modern web, database, and testing technologies. Experienced in supporting enterprise AI platform workflows and campus event leadership.',
-      zh: '商业信息系统本科生，具备网页开发、系统设计、数据安全与技术运营的实践经验。独立开发 EdenAtlas，并使用网页、数据库及测试技术。曾参与企业 AI 平台工作流程及校园活动领导工作。'
+      en: 'Business Information Systems undergraduate with hands-on experience in web development, system design, data security, and technical operations. Worked with web, database, and testing technologies while supporting enterprise AI platform workflows and campus event leadership.',
+      zh: '商业信息系统本科生，具备网页开发、系统设计、数据安全与技术运营的实践经验。曾使用网页、数据库及测试技术，参与企业 AI 平台工作流程及校园活动领导工作。'
     },
     experienceBullets: {
       en: [

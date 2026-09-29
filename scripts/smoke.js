@@ -22,6 +22,7 @@ function load(page, slug = '') {
   const menu = { attrs: { 'aria-expanded': 'false' }, listeners: {}, addEventListener(name, callback) { this.listeners[name] = callback; }, getAttribute(name) { return this.attrs[name]; }, setAttribute(name, value) { this.attrs[name] = value; } };
   const document = {
     body: { dataset: { page } }, documentElement: { lang: 'en' },
+    addEventListener() {}, removeEventListener() {},
     getElementById(id) { return id === 'print-resume' && page !== 'resume' ? null : element(id); },
     querySelector(selector) { return selector === '.menu-toggle' ? menu : null; },
     querySelectorAll(selector) { return selector === '[data-language]' ? buttons : []; }
@@ -38,7 +39,7 @@ function load(page, slug = '') {
 
 for (const page of ['home', 'projects', 'resume', 'cv']) {
   const view = load(page);
-  assert.match(view.main.innerHTML, /Low Fang Jun|EdenAtlas/);
+  assert.match(view.main.innerHTML, /Low Fang Jun|Enterprise AI/);
   assert.match(view.header.innerHTML, /resume\.html/);
   assert.match(view.header.innerHTML, /cv\.html/);
   view.buttons[1].listeners.click();
@@ -59,11 +60,13 @@ assert.match(resume, /011-10574969/);
 assert.match(resume, /Warrior 3\.0/);
 assert.match(resume, /class="resume-page"/);
 assert.match(resume, /Professional Summary/);
-assert.equal((resume.match(/class="cv-project-row"/g) || []).length, 3);
+assert.equal((resume.match(/class="cv-project-row"/g) || []).length, 2);
+assert.doesNotMatch(resume, /EdenAtlas/);
 assert.doesNotMatch(resume, /class="project-card"/);
 const cv = load('cv').main.innerHTML;
-assert.equal((cv.match(/class="resume-page cv-page"/g) || []).length, 2);
-assert.equal((cv.match(/class="cv-project-entry"/g) || []).length, 3);
+assert.equal((cv.match(/class="resume-page cv-page"/g) || []).length, 1);
+assert.equal((cv.match(/class="cv-project-entry"/g) || []).length, 2);
+assert.doesNotMatch(cv, /EdenAtlas|01 \/ 02|02 \/ 02/);
 assert.equal((cv.match(/class="cv-activity"/g) || []).length, 6);
 assert.match(cv, /document tampering/);
 for (const html of ['index.html', 'projects.html', 'project.html', 'resume.html', 'cv.html']) {
