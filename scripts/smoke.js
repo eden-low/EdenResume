@@ -45,11 +45,11 @@ for (const page of ['home', 'projects', 'resume', 'cv']) {
   assert.match(view.header.innerHTML, /resume\.html/);
   assert.match(view.header.innerHTML, /cv\.html/);
   assert.equal((view.header.innerHTML.match(/href="\.\/project-manager\.html"/g) || []).length, 1);
-  assert.match(view.header.innerHTML, /Project Manager/);
+  assert.match(view.header.innerHTML, /Resume Workspace/);
   view.buttons[1].listeners.click();
   assert.equal(view.document.documentElement.lang, 'zh-Hans');
   assert.equal(view.storage.get('resume-language'), 'zh');
-  assert.match(view.header.innerHTML, /项目管理/);
+  assert.match(view.header.innerHTML, /简历工作区/);
   assert.match(view.main.innerHTML, /项目|履历|个人/);
 }
 for (const slug of ['edenatlas', 'utar-epms', 'enterprise-ai-ops']) {
@@ -59,6 +59,12 @@ for (const slug of ['edenatlas', 'utar-epms', 'enterprise-ai-ops']) {
   view.buttons[1].listeners.click();
   assert.match(view.main.innerHTML, /技术 \/ 技能/);
 }
+const utarCase = load('project', 'utar-epms');
+assert.match(utarCase.main.innerHTML, /Event proposals, approvals, and planning steps needed a clearer structure\./);
+assert.match(utarCase.main.innerHTML, /Applied requirements analysis and database design to a defined web workflow\./);
+assert.doesNotMatch(utarCase.main.innerHTML, /A detailed case study is not available/);
+utarCase.buttons[1].listeners.click();
+assert.match(utarCase.main.innerHTML, /活动提案、审批和策划步骤需要更清晰的结构/);
 assert.match(load('project', 'missing').main.innerHTML, /Project not found/);
 const resume = load('resume').main.innerHTML;
 assert.match(resume, /011-10574969/);
@@ -84,6 +90,8 @@ const overrides = Object.fromEntries(['utar-epms', 'enterprise-ai-ops'].map(id =
 const seeded = { 'portfolio-project-data': JSON.stringify({ version: 1, overrides, imported }) };
 const selectedProjects = load('projects', '', seeded).main.innerHTML;
 assert.match(selectedProjects, /Imported 1/);
+assert.match(selectedProjects, /View Project/);
+assert.doesNotMatch(selectedProjects, /View Case Study/);
 assert.doesNotMatch(selectedProjects, /Imported 2|Imported 3|EdenAtlas/);
 const selectedResume = load('resume', '', seeded).main.innerHTML;
 assert.match(selectedResume, /Imported 1|Imported 2/);
@@ -91,6 +99,47 @@ assert.doesNotMatch(selectedResume, /Imported 3|EdenAtlas/);
 assert.equal((selectedResume.match(/class="cv-project-row"/g) || []).length, 2);
 const selectedCV = load('cv', '', seeded).main.innerHTML;
 assert.match(selectedCV, /Imported 1|Imported 2|Imported 3/);
+const incompleteCase = load('project', 'manual-1', seeded).main.innerHTML;
+assert.match(incompleteCase, /A detailed case study is not available/);
+assert.doesNotMatch(incompleteCase, /case-section/);
+const readyImported = { id: 'manual-ready', title: 'Ready Case', description: 'A documented student project.',
+  source: 'manual', type: 'Academic', technologies: ['JavaScript'], features: ['Proposal review form'], includeInPortfolio: true,
+  includeInResume: true, includeInCV: true, resumePriority: 3, cvPriority: 3,
+  resumeBullets: { en: ['Built a project planning flow.', 'Improved approval clarity.'], zh: ['开发项目策划流程。'] },
+  cvResponsibilities: { en: 'Implemented the proposal review form.', zh: '实现提案审核表单。' },
+  cvTechnicalDecisions: { en: 'Used structured proposal records.', zh: '采用结构化提案记录。' },
+  caseStudy: { overview: { en: 'A documented project for event planning.', zh: '一个用于活动策划与审批流程的课程项目。' },
+    solution: { en: 'Structured the event proposal workflow.', zh: '将活动提案与审批流程结构化。' } } };
+const readySeed = { 'portfolio-project-data': JSON.stringify({ version: 1, overrides: {}, imported: [readyImported] }) };
+const readyProjects = load('projects', '', readySeed).main.innerHTML;
+assert.match(readyProjects, /Ready Case/);
+assert.match(readyProjects, /View Case Study/);
+const readyCase = load('project', 'manual-ready', readySeed);
+assert.match(readyCase.main.innerHTML, /Structured the event proposal workflow/);
+readyCase.buttons[1].listeners.click();
+assert.match(readyCase.main.innerHTML, /将活动提案与审批流程结构化/);
+assert.doesNotMatch(load('resume', '', readySeed).main.innerHTML, /Ready Case/);
+assert.match(load('cv', '', readySeed).main.innerHTML, /Ready Case/);
+assert.match(load('cv', '', readySeed).main.innerHTML, /Implemented the proposal review form/);
+assert.match(load('cv', '', readySeed).main.innerHTML, /Proposal review form/);
+const readyResumeSeed = { 'portfolio-project-data': JSON.stringify({ version: 1, overrides, imported: [readyImported] }) };
+assert.match(load('resume', '', readyResumeSeed).main.innerHTML, /Built a project planning flow/);
+assert.doesNotMatch(load('resume', '', readyResumeSeed).main.innerHTML, /Improved approval clarity/);
+const editedBaseline = { 'portfolio-project-data': JSON.stringify({ version: 1, overrides: {}, imported: [], contentOverrides: {
+  'utar-epms': { id: 'utar-epms', title: 'Edited event project', description: 'An edited English summary.',
+    role: 'Designed the workflow.', type: 'Coursework', source: 'manual', technologies: ['JavaScript'],
+    includeInPortfolio: true, includeInResume: true, includeInCV: true, resumePriority: 2, cvPriority: 2,
+    resumeBullets: { en: ['Designed the event workflow.'], zh: ['设计活动流程。'] },
+    localizedBasics: { name: { en: 'Edited event project', zh: '活动项目修订版' },
+      short: { en: 'An edited English summary.', zh: '修订后的中文概述。' },
+      role: { en: 'Designed the workflow.', zh: '设计活动流程。' } } }
+} }) };
+const editedResume = load('resume', '', editedBaseline);
+assert.match(editedResume.main.innerHTML, /Edited event project/);
+assert.match(editedResume.main.innerHTML, /Designed the event workflow/);
+editedResume.buttons[1].listeners.click();
+assert.match(editedResume.main.innerHTML, /活动项目修订版/);
+assert.match(editedResume.main.innerHTML, /设计活动流程/);
 for (const html of ['index.html', 'projects.html', 'project.html', 'resume.html', 'cv.html', 'project-manager.html']) {
   const source = read(html);
   for (const match of source.matchAll(/(?:src|href)="(\.\/[^"#?]+)"/g)) {

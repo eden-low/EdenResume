@@ -26,6 +26,7 @@ body[data-page="resume"] .site-main,body[data-page="cv"] .site-main{background:#
 .cv-bullets li:last-child{margin-bottom:0}
 .cv-project-row+.cv-project-row{margin-top:1.7mm}
 .cv-project-row p{color:#47434e;font-size:9.1pt;margin-top:.3mm}
+.resume-project-bullets{margin:1mm 0 0;padding-left:4mm;font-size:8.8pt}
 .cv-lead p{margin-top:.9mm}
 .cv-lead-list{list-style:none;padding:0;margin:1.8mm 0 0;display:grid;grid-template-columns:1fr 1fr;column-gap:4mm;row-gap:.6mm;font-size:9.1pt}
 .cv-lead-list li{min-width:0}

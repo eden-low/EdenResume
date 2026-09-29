@@ -6,41 +6,41 @@
   const page = document.body.dataset.page;
   const ui = {
     en: {
-      home: 'Home', projects: 'Projects', resume: 'Resume', cv: 'CV', manager: 'Project Manager', contact: 'Contact', menu: 'Open navigation menu',
+      home: 'Home', projects: 'Projects', resume: 'Resume', cv: 'CV', manager: 'Resume Workspace', contact: 'Contact', menu: 'Open navigation menu',
       intro: 'Personal portfolio', viewProjects: 'View Projects', viewResume: 'View Resume', github: 'GitHub',
       about: 'About / Snapshot', featured: 'Featured Projects', allProjects: 'All Projects', experience: 'Experience',
       leadership: 'Leadership', skills: 'Skills', education: 'Education', languages: 'Languages',
       programming: 'Programming', platforms: 'Platforms', tools: 'Tools', soft: 'Soft Skills',
       contactHeading: 'Let’s connect', contactCopy: 'Open to internship and graduate opportunities.',
-      emailMe: 'Email me', seeAll: 'See all projects', caseStudy: 'View Case Study',
+      emailMe: 'Email me', seeAll: 'See all projects', caseStudy: 'View Case Study', viewProject: 'View Project',
       selectedWork: 'Selected work', projectIntro: 'Selected work in system design, web development, and enterprise AI operations.', live: 'Live',
       contribution: 'Contribution', archived: 'Archived work', active: 'Active', closeMenu: 'Close navigation menu', languageLabel: 'Language', projectNavigation: 'Project navigation', noSelectedProjects: 'No projects selected for the portfolio yet.',
       profile: 'Profile', relevantCourses: 'Relevant coursework', print: 'Print / Save PDF',
       professionalSummary: 'Professional Summary', selectedProjects: 'Selected Projects', projectsContinued: 'Selected Projects (continued)', technicalSkills: 'Technical Skills', frameworks: 'Frameworks / Platforms',
       cgpa: 'CGPA', phone: 'Phone',
       overview: 'Overview', problem: 'Problem', role: 'Role', features: 'Features', setup: 'Setup / Usage', investigation: 'Investigation',
-      solution: 'Solution', result: 'Result', learned: 'What I Learned', technology: 'Technology / Skills',
+      solution: 'Solution', result: 'Result', learned: 'What I Learned', technology: 'Technology / Skills', responsibilities: 'Responsibilities', technicalDecisions: 'Technical decisions',
       previous: 'Previous Project', next: 'Next Project', backProjects: 'All Projects',
-      notFound: 'Project not found', notFoundCopy: 'This project link does not match a published case study.',
+      notFound: 'Project not found', notFoundCopy: 'This project link does not match a published case study.', caseStudyUnavailable: 'A detailed case study is not available for this project. Available project information is shown below.',
       footer: 'Portfolio & resume'
     },
     zh: {
-      home: '首页', projects: '项目', resume: '简历', cv: '完整履历', manager: '项目管理', contact: '联系', menu: '打开导航菜单',
+      home: '首页', projects: '项目', resume: '简历', cv: '完整履历', manager: '简历工作区', contact: '联系', menu: '打开导航菜单',
       intro: '个人作品集', viewProjects: '查看项目', viewResume: '查看履历', github: 'GitHub',
       about: '关于 / 简介', featured: '精选项目', allProjects: '所有项目', experience: '工作经历',
       leadership: '领导经历', skills: '技能', education: '教育经历', languages: '语言',
       programming: '编程', platforms: '平台与技术', tools: '工具', soft: '软技能',
       contactHeading: '保持联系', contactCopy: '开放实习与毕业生职位机会。',
-      emailMe: '发送邮件', seeAll: '查看所有项目', caseStudy: '查看案例',
+      emailMe: '发送邮件', seeAll: '查看所有项目', caseStudy: '查看案例', viewProject: '查看项目',
       selectedWork: '精选作品', projectIntro: '系统设计、网页开发与企业 AI 运营相关的精选项目。', live: '线上网站',
       contribution: '参与工作', archived: '历史项目', active: '进行中', closeMenu: '关闭导航菜单', languageLabel: '语言', projectNavigation: '项目导航', noSelectedProjects: '尚未选取要展示在作品集的项目。',
       profile: '个人简介', relevantCourses: '相关课程', print: '打印 / 保存 PDF',
       professionalSummary: '职业简介', selectedProjects: '精选项目', projectsContinued: '精选项目（续）', technicalSkills: '技术技能', frameworks: '框架 / 平台',
       cgpa: 'CGPA', phone: '电话',
       overview: '概览', problem: '问题', role: '职责', features: '功能', setup: '安装 / 使用', investigation: '研究过程',
-      solution: '解决方案', result: '成果', learned: '所学经验', technology: '技术 / 技能',
+      solution: '解决方案', result: '成果', learned: '所学经验', technology: '技术 / 技能', responsibilities: '职责', technicalDecisions: '技术决策',
       previous: '上一个项目', next: '下一个项目', backProjects: '所有项目',
-      notFound: '找不到项目', notFoundCopy: '此项目链接与现有案例不符。',
+      notFound: '找不到项目', notFoundCopy: '此项目链接与现有案例不符。', caseStudyUnavailable: '此项目尚无完整案例，以下显示现有的项目信息。',
       footer: '作品集与履历'
     }
   };
@@ -62,7 +62,7 @@
   function projectCard(project, index) {
     const githubUrl = window.PROJECT_STORE.url(project.githubUrl);
     const liveUrl = window.PROJECT_STORE.url(project.liveUrl);
-    return `<article class="project-card"><div class="card-top"><span class="eyebrow">${safe(project.category)}</span><span class="card-number">0${index + 1}</span></div><h3>${escapeHtml(project.name)}</h3><p class="project-description">${safe(project.short)}</p>${project.role ? `<p class="project-role"><strong>${t('contribution')}:</strong> ${safe(project.role)}</p>` : ''}${tags(project.technologies)}<div class="project-links"><a class="text-link" href="${projectHref(project)}">${t('caseStudy')} <span aria-hidden="true">↗</span></a>${githubUrl ? `<a class="text-link" href="${escapeHtml(githubUrl)}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>` : ''}${liveUrl ? `<a class="text-link" href="${escapeHtml(liveUrl)}" target="_blank" rel="noopener noreferrer">${t('live')} ↗</a>` : ''}</div></article>`;
+    return `<article class="project-card"><div class="card-top"><span class="eyebrow">${safe(project.category)}</span><span class="card-number">0${index + 1}</span></div><h3>${safe(project.name)}</h3><p class="project-description">${safe(project.short)}</p>${project.role ? `<p class="project-role"><strong>${t('contribution')}:</strong> ${safe(project.role)}</p>` : ''}${tags(project.technologies)}<div class="project-links"><a class="text-link" href="${projectHref(project)}">${t(window.PROJECT_STORE.caseStudyReady(project) ? 'caseStudy' : 'viewProject')} <span aria-hidden="true">↗</span></a>${githubUrl ? `<a class="text-link" href="${escapeHtml(githubUrl)}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>` : ''}${liveUrl ? `<a class="text-link" href="${escapeHtml(liveUrl)}" target="_blank" rel="noopener noreferrer">${t('live')} ↗</a>` : ''}</div></article>`;
   }
   function experienceCard(item, compact = false) {
     return `<article class="entry"><div class="entry-head"><div><h3>${safe(item.role)}</h3><p class="entry-sub">${safe(item.company)} · ${safe(item.location)}</p></div><span class="entry-date">${safe(item.period)}</span></div>${compact ? `<p>${safe(item.bullets[language][0])}</p>` : `<ul class="detail-list">${item.bullets[language].map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>`}</article>`;
@@ -101,7 +101,10 @@
     const cvSection = (id, title, content) => `<section class="cv-section" aria-labelledby="cv-${id}"><h2 id="cv-${id}" class="cv-section-title">${title}</h2>${content}</section>`;
     const education = data.EDUCATION.map(item => `<div class="cv-education-row"><div class="cv-row-heading"><h3>${safe(item.school)}</h3><span>${escapeHtml(item.period)} · ${t('cgpa')} ${escapeHtml(item.cgpa)}</span></div><p>${safe(item.degree)}</p>${item.coursework ? `<p class="cv-courses">${t('relevantCourses')}: ${item.coursework[language].map(escapeHtml).join(' · ')}</p>` : ''}</div>`).join('');
     const experience = data.EXPERIENCE.map(item => `<div class="cv-experience"><div class="cv-row-heading"><h3>${safe(item.role)}</h3><span>${safe(item.period)}</span></div><p class="cv-subline">${safe(item.company)} · ${safe(item.location)}</p><ul class="cv-bullets">${resume.experienceBullets[language].map(bullet => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul></div>`).join('');
-    const projects = documentProjects('includeInResume', 'resumePriority').slice(0, 2).map(project => `<div class="cv-project-row"><div class="cv-row-heading"><h3>${escapeHtml(project.name)}</h3><span>${safe(project.category)}</span></div><p>${(resume.projectTechnologies[project.slug] || project.technologies.slice(0, 5)).map(escapeHtml).join(' · ')}</p></div>`).join('');
+    const projects = documentProjects('includeInResume', 'resumePriority').slice(0, 2).map(project => {
+      const bullets = project.resumeBullets?.[language]?.filter(Boolean).slice(0, 1) || [];
+      return `<div class="cv-project-row"><div class="cv-row-heading"><h3>${safe(project.name)}</h3><span>${safe(project.category)}</span></div><p>${(resume.projectTechnologies[project.slug] || project.technologies.slice(0, 5)).map(escapeHtml).join(' · ')}</p>${bullets.length ? `<ul class="cv-bullets resume-project-bullets">${bullets.map(bullet => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul>` : ''}</div>`;
+    }).join('');
     const featuredLeader = data.LEADERSHIP[0];
     const leadership = `<div class="cv-lead"><div class="cv-row-heading"><h3>${safe(featuredLeader.role)} — ${safe(featuredLeader.event)}</h3><span>${safe(featuredLeader.period)}</span></div><p>${safe(featuredLeader.detail)}</p></div><ul class="cv-lead-list">${data.LEADERSHIP.slice(1).map(item => `<li><strong>${safe(item.role)}</strong> — ${safe(item.event)}${item.period && !String(value(item.event)).includes(String(value(item.period))) ? `, ${safe(item.period)}` : ''}</li>`).join('')}</ul>`;
     const skillRows = [['programming', resume.skills.programming], ['frameworks', resume.skills.platforms], ['tools', resume.skills.tools], ['languages', data.LANGUAGES[language]]];
