@@ -94,9 +94,25 @@ assert.match(selectedProjects, /View Project/);
 assert.doesNotMatch(selectedProjects, /View Case Study/);
 assert.doesNotMatch(selectedProjects, /Imported 2|Imported 3|EdenAtlas/);
 const selectedResume = load('resume', '', seeded).main.innerHTML;
-assert.match(selectedResume, /Imported 1|Imported 2/);
-assert.doesNotMatch(selectedResume, /Imported 3|EdenAtlas/);
-assert.equal((selectedResume.match(/class="cv-project-row"/g) || []).length, 2);
+assert.match(selectedResume, /Imported 1|Imported 2|Imported 3/);
+assert.doesNotMatch(selectedResume, /EdenAtlas/);
+assert.equal((selectedResume.match(/class="cv-project-row"/g) || []).length, 3);
+assert.ok(selectedResume.indexOf('Imported 1') < selectedResume.indexOf('Imported 2'));
+assert.ok(selectedResume.indexOf('Imported 2') < selectedResume.indexOf('Imported 3'));
+for (const count of [1, 2, 3, 5]) {
+  const chosen = imported.slice(0, count).concat(count === 5 ? [4, 5].map(number => ({ ...imported[0], id: `manual-${number}`, title: `Imported ${number}`, resumePriority: number })) : []);
+  const scenario = { 'portfolio-project-data': JSON.stringify({ version: 1, overrides, imported: chosen }) };
+  const html = load('resume', '', scenario).main.innerHTML;
+  assert.equal((html.match(/class="cv-project-row"/g) || []).length, count);
+  assert.match(html, /Imported 1/);
+}
+const mixed = imported.map((project, index) => ({ ...project, resumePriority: [3, 1, 2][index] }));
+mixed.push({ ...imported[0], id: 'manual-excluded', title: 'Excluded Project', includeInResume: false, resumePriority: null });
+const mixedSeed = { 'portfolio-project-data': JSON.stringify({ version: 1, overrides, imported: mixed }) };
+const mixedHtml = load('resume', '', mixedSeed).main.innerHTML;
+assert.ok(mixedHtml.indexOf('Imported 2') < mixedHtml.indexOf('Imported 3'));
+assert.ok(mixedHtml.indexOf('Imported 3') < mixedHtml.indexOf('Imported 1'));
+assert.doesNotMatch(mixedHtml, /Excluded Project/);
 const selectedCV = load('cv', '', seeded).main.innerHTML;
 assert.match(selectedCV, /Imported 1|Imported 2|Imported 3/);
 const incompleteCase = load('project', 'manual-1', seeded).main.innerHTML;
@@ -118,13 +134,17 @@ const readyCase = load('project', 'manual-ready', readySeed);
 assert.match(readyCase.main.innerHTML, /Structured the event proposal workflow/);
 readyCase.buttons[1].listeners.click();
 assert.match(readyCase.main.innerHTML, /将活动提案与审批流程结构化/);
-assert.doesNotMatch(load('resume', '', readySeed).main.innerHTML, /Ready Case/);
+assert.match(load('resume', '', readySeed).main.innerHTML, /Ready Case/);
 assert.match(load('cv', '', readySeed).main.innerHTML, /Ready Case/);
 assert.match(load('cv', '', readySeed).main.innerHTML, /Implemented the proposal review form/);
 assert.match(load('cv', '', readySeed).main.innerHTML, /Proposal review form/);
 const readyResumeSeed = { 'portfolio-project-data': JSON.stringify({ version: 1, overrides, imported: [readyImported] }) };
 assert.match(load('resume', '', readyResumeSeed).main.innerHTML, /Built a project planning flow/);
 assert.doesNotMatch(load('resume', '', readyResumeSeed).main.innerHTML, /Improved approval clarity/);
+const bilingualResume = load('resume', '', readyResumeSeed);
+bilingualResume.buttons[1].listeners.click();
+assert.match(bilingualResume.main.innerHTML, /class="cv-bullets resume-project-bullets"><li>[^<]+<\/li>/);
+assert.doesNotMatch(bilingualResume.main.innerHTML, /Built a project planning flow/);
 const editedBaseline = { 'portfolio-project-data': JSON.stringify({ version: 1, overrides: {}, imported: [], contentOverrides: {
   'utar-epms': { id: 'utar-epms', title: 'Edited event project', description: 'An edited English summary.',
     role: 'Designed the workflow.', type: 'Coursework', source: 'manual', technologies: ['JavaScript'],

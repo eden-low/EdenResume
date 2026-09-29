@@ -95,16 +95,85 @@
   function renderProjects() {
     return `<div class="container page-content"><header class="page-intro"><p class="eyebrow">${t('selectedWork')}</p><h1>${t('allProjects')}<span class="hero-period">.</span></h1><p>${t('projectIntro')}</p></header>${portfolioProjects().length ? `<div class="project-grid projects-page-grid">${portfolioProjects().map(projectCard).join('')}</div>` : `<p class="project-empty">${t('noSelectedProjects')}</p>`}</div>`;
   }
+  function resumeProjectDetails(project) {
+    const bullets = (project.resumeBullets?.[language] || []).filter(Boolean).map(bullet => String(bullet).toLowerCase());
+    const details = [value(project.role), value(project.short)].filter(detail => typeof detail === 'string' && detail.trim() && !bullets.some(bullet => bullet.includes(detail.trim().toLowerCase())));
+    return details.filter((detail, index) => details.findIndex(other => other.trim().toLowerCase() === detail.trim().toLowerCase()) === index);
+  }
+  function resumeProjectRow(project, bulletCount = 1, detailCount = 0) {
+    const bullets = (project.resumeBullets?.[language] || []).filter(bullet => typeof bullet === 'string' && bullet.trim());
+    const technologies = data.RESUME.projectTechnologies[project.slug] || project.technologies.slice(0, 5);
+    const details = resumeProjectDetails(project).slice(0, detailCount);
+    return `<div class="cv-project-row"><div class="cv-row-heading"><h3>${safe(project.name)}</h3><span>${safe(project.category)}</span></div><p>${technologies.map(escapeHtml).join(' · ')}</p>${bullets.length && bulletCount ? `<ul class="cv-bullets resume-project-bullets">${bullets.slice(0, bulletCount).map(bullet => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul>` : ''}${details.map(detail => `<p class="resume-project-detail">${escapeHtml(detail)}</p>`).join('')}</div>`;
+  }
+  // A print-sized copy provides the same A4 width and typography on desktop and mobile.
+  function fitResumeProjects(main, candidates) {
+    const page = main.querySelector('.resume-page');
+    const projectSection = main.querySelector('[data-resume-projects]');
+    if (!page || !projectSection || !candidates.length) return;
+    const measure = page.cloneNode(true);
+    measure.classList.add('resume-measure');
+    measure.removeAttribute('aria-label');
+    measure.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(measure);
+    const measureSection = measure.querySelector('[data-resume-projects]');
+    const measureRows = measure.querySelector('[data-resume-project-rows]');
+    const available = 297 * 96 / 25.4 - 8;
+    const fits = (counts, details, compact) => {
+      measure.classList.toggle('resume-compact', compact);
+      measureRows.innerHTML = candidates.map((project, index) => counts[index] ? resumeProjectRow(project, counts[index], details[index]) : '').join('');
+      measureSection.hidden = !counts.some(Boolean);
+      const last = measure.lastElementChild;
+      const bottom = last.getBoundingClientRect().bottom - measure.getBoundingClientRect().top + 12 * 96 / 25.4;
+      return bottom <= available;
+    };
+    const plan = compact => {
+      const counts = candidates.map(() => 0);
+      const details = candidates.map(() => 0);
+      for (let index = 0; index < candidates.length; index++) {
+        counts[index] = 1;
+        if (!fits(counts, details, compact)) { counts[index] = 0; break; }
+      }
+      // Give every included project its strongest bullet before adding second or third bullets.
+      let expanded;
+      do {
+        expanded = false;
+        candidates.forEach((project, index) => {
+          const availableBullets = (project.resumeBullets?.[language] || []).filter(bullet => typeof bullet === 'string' && bullet.trim()).length;
+          if (!counts[index] || counts[index] >= availableBullets) return;
+          counts[index]++;
+          if (fits(counts, details, compact)) expanded = true;
+          else counts[index]--;
+        });
+      } while (expanded);
+      // Add one existing contribution or summary only after projects and bullets are fitted.
+      candidates.forEach((project, index) => {
+        if (!counts[index] || !resumeProjectDetails(project).length) return;
+        details[index] = 1;
+        if (!fits(counts, details, compact)) details[index] = 0;
+      });
+      candidates.forEach((project, index) => {
+        if (!counts[index] || (project.resumeBullets?.[language] || []).some(Boolean) || resumeProjectDetails(project).length < 2 || details[index] !== 1) return;
+        details[index] = 2;
+        if (!fits(counts, details, compact)) details[index] = 1;
+      });
+      return { counts, details, compact };
+    };
+    const normal = plan(false);
+    const condensed = normal.counts.filter(Boolean).length < candidates.length ? plan(true) : normal;
+    const chosen = condensed.counts.filter(Boolean).length > normal.counts.filter(Boolean).length ? condensed : normal;
+    page.classList.toggle('resume-compact', chosen.compact);
+    projectSection.querySelector('[data-resume-project-rows]').innerHTML = candidates.map((project, index) => chosen.counts[index] ? resumeProjectRow(project, chosen.counts[index], chosen.details[index]) : '').join('');
+    projectSection.hidden = !chosen.counts.some(Boolean);
+    measure.remove();
+  }
   function renderResume() {
     const profile = data.PROFILE;
     const resume = data.RESUME;
     const cvSection = (id, title, content) => `<section class="cv-section" aria-labelledby="cv-${id}"><h2 id="cv-${id}" class="cv-section-title">${title}</h2>${content}</section>`;
     const education = data.EDUCATION.map(item => `<div class="cv-education-row"><div class="cv-row-heading"><h3>${safe(item.school)}</h3><span>${escapeHtml(item.period)} · ${t('cgpa')} ${escapeHtml(item.cgpa)}</span></div><p>${safe(item.degree)}</p>${item.coursework ? `<p class="cv-courses">${t('relevantCourses')}: ${item.coursework[language].map(escapeHtml).join(' · ')}</p>` : ''}</div>`).join('');
     const experience = data.EXPERIENCE.map(item => `<div class="cv-experience"><div class="cv-row-heading"><h3>${safe(item.role)}</h3><span>${safe(item.period)}</span></div><p class="cv-subline">${safe(item.company)} · ${safe(item.location)}</p><ul class="cv-bullets">${resume.experienceBullets[language].map(bullet => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul></div>`).join('');
-    const projects = documentProjects('includeInResume', 'resumePriority').slice(0, 2).map(project => {
-      const bullets = project.resumeBullets?.[language]?.filter(Boolean).slice(0, 1) || [];
-      return `<div class="cv-project-row"><div class="cv-row-heading"><h3>${safe(project.name)}</h3><span>${safe(project.category)}</span></div><p>${(resume.projectTechnologies[project.slug] || project.technologies.slice(0, 5)).map(escapeHtml).join(' · ')}</p>${bullets.length ? `<ul class="cv-bullets resume-project-bullets">${bullets.map(bullet => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul>` : ''}</div>`;
-    }).join('');
+    const projects = documentProjects('includeInResume', 'resumePriority').map(project => resumeProjectRow(project)).join('');
     const featuredLeader = data.LEADERSHIP[0];
     const leadership = `<div class="cv-lead"><div class="cv-row-heading"><h3>${safe(featuredLeader.role)} — ${safe(featuredLeader.event)}</h3><span>${safe(featuredLeader.period)}</span></div><p>${safe(featuredLeader.detail)}</p></div><ul class="cv-lead-list">${data.LEADERSHIP.slice(1).map(item => `<li><strong>${safe(item.role)}</strong> — ${safe(item.event)}${item.period && !String(value(item.event)).includes(String(value(item.period))) ? `, ${safe(item.period)}` : ''}</li>`).join('')}</ul>`;
     const skillRows = [['programming', resume.skills.programming], ['frameworks', resume.skills.platforms], ['tools', resume.skills.tools], ['languages', data.LANGUAGES[language]]];
@@ -113,7 +182,7 @@
       ${cvSection('summary', t('professionalSummary'), `<p>${safe(resume.summary)}</p>`)}
       ${cvSection('education', t('education'), education)}
       ${cvSection('experience', t('experience'), experience)}
-      ${projects ? cvSection('projects', t('selectedProjects'), projects) : ''}
+      ${projects ? `<section class="cv-section" data-resume-projects aria-labelledby="cv-projects"><h2 id="cv-projects" class="cv-section-title">${t('selectedProjects')}</h2><div data-resume-project-rows>${projects}</div></section>` : ''}
       ${cvSection('leadership', t('leadership'), leadership)}
       ${cvSection('skills', t('technicalSkills'), skills)}
     </article></div>`;
@@ -135,6 +204,7 @@
     }
     const main = document.getElementById('main');
     main.innerHTML = page === 'home' ? renderHome() : page === 'projects' ? renderProjects() : page === 'resume' ? renderResume() : page === 'cv' ? window.renderCVPage({ data, language, t, safe, escapeHtml, value }) : page === 'manager' ? window.ProjectManager.render({ data, language }) : window.renderProjectPage({ data, language, t, safe, escapeHtml, tags, projectHref });
+    if (page === 'resume' && typeof main.querySelector === 'function') fitResumeProjects(main, documentProjects('includeInResume', 'resumePriority'));
     renderFooter();
     if (page === 'manager') window.ProjectManager.bind({ data, baselineProjects, language, refresh: () => render() });
     document.getElementById('print-resume')?.addEventListener('click', () => window.print());
