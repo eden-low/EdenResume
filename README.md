@@ -27,7 +27,9 @@ The language switch saves `en` or `zh` under the `resume-language` key in local 
 
 ## Project workspace
 
-Open `project-manager.html` to browse public repositories for `eden-low`, read a repository README, or paste Markdown manually. README analysis uses local rules; it does not call an AI service. Every result opens as an editable draft. GitHub repositories are never selected automatically.
+Open `project-manager.html` to browse public repositories for `eden-low`, read a repository README, or paste Markdown manually. The owner interface has a client-side password gate. The SHA-256 password hash and a short browser-console command for replacing it are beside `PASSWORD_SHA256` in `assets/js/project-manager.js`; keep the plaintext password out of this public repository. Unlock state lasts for the current tab session, and **Lock** clears that session flag without clearing projects. This only hides the interface in the browser; a static site cannot provide server-side access control or make locally stored data private.
+
+README analysis uses local rules; it does not call an AI service. Every result opens as an editable draft. GitHub repositories are never selected automatically.
 
 Saved drafts and Portfolio, Resume, and CV inclusion choices live under the `portfolio-project-data` local storage key. They affect **only that browser**; they are not published to other site visitors or committed to this repository. The Project Manager can clear these local changes. The published baseline remains in `assets/js/data.js`. The Resume displays at most two selected projects, ordered by `resumePriority`, to retain its one-page A4 layout; the CV has no project or page-count limit.
 

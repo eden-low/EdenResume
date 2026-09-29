@@ -44,9 +44,12 @@ for (const page of ['home', 'projects', 'resume', 'cv']) {
   assert.match(view.main.innerHTML, /Low Fang Jun|Enterprise AI/);
   assert.match(view.header.innerHTML, /resume\.html/);
   assert.match(view.header.innerHTML, /cv\.html/);
+  assert.equal((view.header.innerHTML.match(/href="\.\/project-manager\.html"/g) || []).length, 1);
+  assert.match(view.header.innerHTML, /Project Manager/);
   view.buttons[1].listeners.click();
   assert.equal(view.document.documentElement.lang, 'zh-Hans');
   assert.equal(view.storage.get('resume-language'), 'zh');
+  assert.match(view.header.innerHTML, /项目管理/);
   assert.match(view.main.innerHTML, /项目|履历|个人/);
 }
 for (const slug of ['edenatlas', 'utar-epms', 'enterprise-ai-ops']) {

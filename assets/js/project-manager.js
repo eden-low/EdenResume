@@ -22,7 +22,9 @@
       liveUrl: 'Live URL', source: 'Source', setup: 'Setup / usage', readme: 'README (plain Markdown)',
       includeInPortfolio: 'Include in Portfolio', includeInResume: 'Include in Resume', includeInCV: 'Include in CV',
       resumePriority: 'Resume priority', cvPriority: 'CV priority', save: 'Save Draft', cancel: 'Cancel',
-      saved: 'Local projects & selections', savedIntro: 'Only checked projects appear in their selected pages. Resume shows the first two by priority to retain one A4 page.',
+      saved: 'Project Selection', savedIntro: 'Select which projects appear on your Portfolio, Resume, and CV.',
+      gateIntro: 'Owner access required.', password: 'Password', unlock: 'Unlock', lock: 'Lock',
+      incorrectPassword: 'Incorrect password. Please try again.', cryptoUnavailable: 'Password verification is unavailable in this browser.',
       remove: 'Remove local project', edit: 'Edit', reset: 'Clear all local projects and selections',
       confirmReset: 'Clear all imported projects and local selections in this browser?', confirmRemove: 'Remove this locally saved project?',
       saveError: 'Could not save in this browser. Storage may be full or disabled.', savedMessage: 'Project saved in this browser.',
@@ -51,7 +53,9 @@
       liveUrl: '线上链接', source: '来源', setup: '安装 / 使用方法', readme: 'README（纯 Markdown）',
       includeInPortfolio: '加入作品集', includeInResume: '加入 Resume', includeInCV: '加入 CV',
       resumePriority: 'Resume 优先级', cvPriority: 'CV 优先级', save: '保存草稿', cancel: '取消',
-      saved: '本地项目与收录设置', savedIntro: '只有勾选的项目才会出现在相应页面。Resume 按优先级最多显示两个项目，以维持一页 A4。',
+      saved: '项目选择', savedIntro: '选择哪些项目显示在作品集、简历和 CV 中。',
+      gateIntro: '需要管理员访问权限。', password: '密码', unlock: '解锁', lock: '锁定',
+      incorrectPassword: '密码错误，请重试。', cryptoUnavailable: '此浏览器无法验证密码。',
       remove: '移除本地项目', edit: '编辑', reset: '清除所有本地项目与设置',
       confirmReset: '要清除此浏览器中所有导入项目与本地收录设置吗？', confirmRemove: '要移除此本地项目吗？',
       saveError: '无法保存到此浏览器。储存空间可能已满或被禁用。', savedMessage: '项目已保存到此浏览器。',
@@ -61,6 +65,14 @@
       localProject: '本地项目', publishedProject: '网站原有项目', selected: '收录于'
     }
   };
+  const AUTH_KEY = 'project-manager-authenticated';
+  // To change the password, generate a SHA-256 hex digest in the browser console:
+  // crypto.subtle.digest('SHA-256', new TextEncoder().encode(prompt('New password'))).then(bytes => console.log(Array.from(new Uint8Array(bytes), byte => byte.toString(16).padStart(2, '0')).join('')))
+  // Replace only this hash; never commit the password itself. This is a client-side UI gate, not server authentication.
+  const PASSWORD_SHA256 = '2ff3ec560c6d5f176a22eeee871639a4b53b1e5db291ff7e5a314519a0f5728a';
+  let unlocked = false;
+  try { unlocked = sessionStorage.getItem(AUTH_KEY) === 'true'; } catch { /* Storage may be unavailable in file browsers. */ }
+  let gateError = '';
   const state = { username: 'eden-low', repositories: null, loading: false, error: '', notice: '', readmes: {}, preview: null, draft: null, manual: '' };
   let managerClickHandler;
   const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -99,13 +111,14 @@
   }
   function render({ data, language }) {
     document.title = language === 'zh' ? '项目工作区 — Low Fang Jun' : 'Project Workspace — Low Fang Jun';
+    if (!unlocked) return `<div class="container page-content manager-page"><section class="manager-gate manager-panel" aria-labelledby="manager-gate-heading"><p class="eyebrow">/ ${label(language, 'managerLabel')}</p><h1 id="manager-gate-heading">${label(language, 'managerLabel')}</h1><p>${label(language, 'gateIntro')}</p><form id="manager-unlock-form"><label class="manager-field" for="manager-password"><span>${label(language, 'password')}</span></label><input id="manager-password" name="password" type="password" autocomplete="current-password" required aria-describedby="manager-gate-feedback" ${gateError ? 'aria-invalid="true"' : ''}><div class="manager-actions"><button class="button button-primary" type="submit">${label(language, 'unlock')}</button></div><p class="manager-gate-feedback${gateError ? ' manager-error' : ''}" id="manager-gate-feedback" aria-live="polite" ${gateError ? 'role="alert"' : ''}>${gateError ? label(language, gateError) : ''}</p></form></section></div>`;
     const repos = state.repositories;
     const repoContent = state.loading ? `<p class="manager-feedback" role="status">${label(language, 'loading')}</p>`
       : state.error ? `<p class="manager-feedback manager-error" role="alert">${label(language, state.error)}</p>`
       : repos === null ? `<p class="manager-feedback">${label(language, 'beforeSync')}</p>`
       : repos.length ? `<div class="manager-repo-grid">${repos.map((repo, index) => repositoryHtml(repo, index, language)).join('')}</div>`
       : `<p class="manager-feedback">${label(language, 'empty')}</p>`;
-    return `<div class="container page-content manager-page"><header class="page-intro"><p class="eyebrow">/ ${label(language, 'managerLabel')}</p><h1>${label(language, 'heading')}<span class="hero-period">.</span></h1><p>${label(language, 'intro')}</p></header><p class="manager-local-note">${label(language, 'local')}</p>${state.notice ? `<p class="manager-feedback" role="status">${label(language, state.notice)}</p>` : ''}
+    return `<div class="container page-content manager-page"><header class="page-intro"><p class="eyebrow">/ ${label(language, 'managerLabel')}</p><div class="manager-heading-row"><h1 id="manager-heading" tabindex="-1">${label(language, 'heading')}<span class="hero-period">.</span></h1><button class="button button-secondary manager-lock" type="button" id="manager-lock">${label(language, 'lock')}</button></div><p>${label(language, 'intro')}</p></header><p class="manager-local-note">${label(language, 'local')}</p>${state.notice ? `<p class="manager-feedback" role="status">${label(language, state.notice)}</p>` : ''}
       <section class="manager-panel" aria-labelledby="manager-github"><div class="manager-section-head"><h2 id="manager-github">${label(language, 'github')}</h2></div><form id="github-sync-form" class="manager-sync"><label class="manager-field"><span>${label(language, 'username')}</span><input name="username" value="${escape(state.username)}" autocomplete="off" required></label><button class="button button-primary" type="submit" ${state.loading ? 'disabled' : ''}>${label(language, 'sync')}</button></form>${repoContent}</section>
       ${state.preview ? `<section class="manager-panel" aria-labelledby="readme-preview-heading"><h2 id="readme-preview-heading">${label(language, 'preview')}</h2><pre class="manager-readme">${escape(state.preview.missing ? label(language, 'noReadme') : state.preview.content.slice(0, 12000))}</pre></section>` : ''}
       <section class="manager-panel" aria-labelledby="manager-manual"><div class="manager-section-head"><div><h2 id="manager-manual">${label(language, 'manual')}</h2><p>${label(language, 'manualIntro')}</p></div></div><form id="manual-readme-form"><label class="manager-field"><span>${label(language, 'pasteLabel')}</span><textarea name="manual" rows="8" maxlength="100000" placeholder="# ${label(language, 'title')}">${escape(state.manual)}</textarea></label><div class="manager-actions"><button class="button button-secondary" type="submit">${label(language, 'analyze')}</button></div></form></section>
@@ -127,6 +140,36 @@
   }
   function bind({ data, baselineProjects, language, refresh }) {
     const main = document.getElementById('main');
+    if (managerClickHandler) main.removeEventListener('click', managerClickHandler);
+    if (!unlocked) {
+      main.querySelector('#manager-unlock-form')?.addEventListener('submit', async event => {
+        event.preventDefault();
+        const passwordInput = main.querySelector('#manager-password');
+        if (!passwordInput || !globalThis.crypto?.subtle) {
+          gateError = 'cryptoUnavailable'; refresh(); main.querySelector('#manager-password')?.focus(); return;
+        }
+        const password = passwordInput.value;
+        passwordInput.value = '';
+        const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
+        const hash = Array.from(new Uint8Array(bytes), byte => byte.toString(16).padStart(2, '0')).join('');
+        if (hash === PASSWORD_SHA256) {
+          unlocked = true; gateError = '';
+          try { sessionStorage.setItem(AUTH_KEY, 'true'); } catch { /* Current-page access still works. */ }
+          refresh(); main.querySelector('#manager-heading')?.focus();
+        } else {
+          gateError = 'incorrectPassword'; refresh(); main.querySelector('#manager-password')?.focus();
+        }
+      });
+      main.querySelector('#manager-password')?.addEventListener('keydown', event => {
+        if (event.key === 'Escape') { gateError = ''; refresh(); main.querySelector('#manager-password')?.focus(); }
+      });
+      return;
+    }
+    main.querySelector('#manager-lock')?.addEventListener('click', () => {
+      unlocked = false; gateError = '';
+      try { sessionStorage.removeItem(AUTH_KEY); } catch { /* Current-page access still ends. */ }
+      refresh(); main.querySelector('#manager-password')?.focus();
+    });
     main.querySelector('#github-sync-form [name="username"]')?.addEventListener('input', event => { state.username = event.target.value; });
     main.querySelector('#manual-readme-form [name="manual"]')?.addEventListener('input', event => { state.manual = event.target.value; });
     main.querySelector('#project-draft-form')?.addEventListener('input', event => {
@@ -172,7 +215,6 @@
       if (window.PROJECT_STORE.saveDraft(draft)) { state.draft = null; if (draft.source === 'manual') state.manual = ''; state.notice = 'savedMessage'; refresh(); }
       else { state.notice = 'saveError'; refresh(); }
     });
-    if (managerClickHandler) main.removeEventListener('click', managerClickHandler);
     managerClickHandler = async event => {
       const button = event.target.closest('[data-action]');
       if (!button) return;

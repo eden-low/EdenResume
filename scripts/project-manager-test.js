@@ -7,7 +7,7 @@ const root = path.resolve(__dirname, '..');
 const source = file => fs.readFileSync(path.join(root, file), 'utf8');
 const storage = new Map();
 const context = {
-  window: {}, URL, atob, TextDecoder,
+  window: {}, URL, atob, TextDecoder, document: { title: '' },
   localStorage: {
     getItem: key => storage.get(key) ?? null,
     setItem: (key, value) => storage.set(key, value),
@@ -17,6 +17,13 @@ const context = {
 vm.createContext(context);
 for (const file of ['assets/js/data.js', 'assets/js/project-store.js', 'assets/js/readme-parser.js', 'assets/js/github-public.js', 'assets/js/project-manager.js']) vm.runInContext(source(file), context);
 const { PROJECT_STORE: store, README_PARSER: parser, GITHUB_PUBLIC: github, ProjectManager: manager, RESUME_DATA: data } = context.window;
+const lockedEnglish = manager.render({ data, language: 'en' });
+assert.match(lockedEnglish, /Owner access required/);
+assert.match(lockedEnglish, /id="manager-unlock-form"/);
+assert.doesNotMatch(lockedEnglish, /id="github-sync-form"|id="manager-saved"/);
+const lockedChinese = manager.render({ data, language: 'zh' });
+assert.match(lockedChinese, /需要管理员访问权限/);
+assert.match(lockedChinese, /密码/);
 const readme = [
   '[![Build](https://img.shields.io/badge/build-passing.svg)](https://example.com)',
   '# Sample Project',

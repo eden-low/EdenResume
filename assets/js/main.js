@@ -6,7 +6,7 @@
   const page = document.body.dataset.page;
   const ui = {
     en: {
-      home: 'Home', projects: 'Projects', resume: 'Resume', cv: 'CV', contact: 'Contact', menu: 'Open navigation menu',
+      home: 'Home', projects: 'Projects', resume: 'Resume', cv: 'CV', manager: 'Project Manager', contact: 'Contact', menu: 'Open navigation menu',
       intro: 'Personal portfolio', viewProjects: 'View Projects', viewResume: 'View Resume', github: 'GitHub',
       about: 'About / Snapshot', featured: 'Featured Projects', allProjects: 'All Projects', experience: 'Experience',
       leadership: 'Leadership', skills: 'Skills', education: 'Education', languages: 'Languages',
@@ -25,7 +25,7 @@
       footer: 'Portfolio & resume'
     },
     zh: {
-      home: '首页', projects: '项目', resume: '简历', cv: '完整履历', contact: '联系', menu: '打开导航菜单',
+      home: '首页', projects: '项目', resume: '简历', cv: '完整履历', manager: '项目管理', contact: '联系', menu: '打开导航菜单',
       intro: '个人作品集', viewProjects: '查看项目', viewResume: '查看履历', github: 'GitHub',
       about: '关于 / 简介', featured: '精选项目', allProjects: '所有项目', experience: '工作经历',
       leadership: '领导经历', skills: '技能', education: '教育经历', languages: '语言',
@@ -117,7 +117,7 @@
   }
   function renderHeader() {
     const active = page === 'project' ? 'projects' : page;
-    document.getElementById('site-header').innerHTML = `<header class="site-header"><div class="container nav-inner"><a class="brand" href="./index.html" aria-label="${escapeHtml(data.PROFILE.name)} — ${t('home')}"><span class="brand-mark" aria-hidden="true">${escapeHtml(data.PROFILE.initials)}</span><span><strong>${escapeHtml(data.PROFILE.displayName)}</strong><small>${escapeHtml(data.PROFILE.name)}</small></span></a><button class="menu-toggle" type="button" aria-label="${t('menu')}" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button><nav id="primary-nav" class="primary-nav" aria-label="${t('menu')}"><a href="./index.html" ${active === 'home' ? 'aria-current="page"' : ''}>${t('home')}</a><a href="./projects.html" ${active === 'projects' ? 'aria-current="page"' : ''}>${t('projects')}</a><a href="./resume.html" ${active === 'resume' ? 'aria-current="page"' : ''}>${t('resume')}</a><a href="./cv.html" ${active === 'cv' ? 'aria-current="page"' : ''}>${t('cv')}</a><a href="./index.html#contact">${t('contact')}</a><div class="language-switch" role="group" aria-label="${t('languageLabel')}"><button type="button" data-language="en" aria-pressed="${language === 'en'}">EN</button><span aria-hidden="true">/</span><button type="button" data-language="zh" aria-pressed="${language === 'zh'}">中文</button></div></nav></div></header>`;
+    document.getElementById('site-header').innerHTML = `<header class="site-header"><div class="container nav-inner"><a class="brand" href="./index.html" aria-label="${escapeHtml(data.PROFILE.name)} — ${t('home')}"><span class="brand-mark" aria-hidden="true">${escapeHtml(data.PROFILE.initials)}</span><span><strong>${escapeHtml(data.PROFILE.displayName)}</strong><small>${escapeHtml(data.PROFILE.name)}</small></span></a><button class="menu-toggle" type="button" aria-label="${t('menu')}" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button><nav id="primary-nav" class="primary-nav" aria-label="${t('menu')}"><a href="./index.html" ${active === 'home' ? 'aria-current="page"' : ''}>${t('home')}</a><a href="./projects.html" ${active === 'projects' ? 'aria-current="page"' : ''}>${t('projects')}</a><a href="./resume.html" ${active === 'resume' ? 'aria-current="page"' : ''}>${t('resume')}</a><a href="./cv.html" ${active === 'cv' ? 'aria-current="page"' : ''}>${t('cv')}</a><a href="./project-manager.html" ${active === 'manager' ? 'aria-current="page"' : ''}>${t('manager')}</a><a href="./index.html#contact">${t('contact')}</a><div class="language-switch" role="group" aria-label="${t('languageLabel')}"><button type="button" data-language="en" aria-pressed="${language === 'en'}">EN</button><span aria-hidden="true">/</span><button type="button" data-language="zh" aria-pressed="${language === 'zh'}">中文</button></div></nav></div></header>`;
   }
   function renderFooter() {
     document.getElementById('site-footer').innerHTML = page === 'resume' || page === 'cv' ? '' : `<footer class="site-footer"><div class="container footer-inner"><span>© ${new Date().getFullYear()} ${escapeHtml(data.PROFILE.name)}</span><span>${t('footer')}</span><a href="mailto:${escapeHtml(data.PROFILE.email)}">${escapeHtml(data.PROFILE.email)}</a></div></footer>`;

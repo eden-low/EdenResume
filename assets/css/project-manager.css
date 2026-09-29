@@ -1,6 +1,15 @@
 /* Project workspace uses the portfolio tokens and components. */
 .manager-page { max-width: var(--content-width); }
 .manager-page .page-intro { padding-bottom: 24px; }
+.manager-heading-row { display: flex; align-items: start; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.manager-lock { flex: none; margin-top: 8px; }
+.manager-gate { width: min(100%, 440px); margin: clamp(36px, 9vh, 90px) auto; }
+.manager-gate h1 { margin: 8px 0; font-size: clamp(2rem, 6vw, 2.8rem); line-height: 1.15; letter-spacing: -.04em; }
+.manager-gate > p:not(.eyebrow) { margin: 0 0 24px; color: var(--color-muted); }
+.manager-gate input { width: 100%; min-width: 0; margin-top: 7px; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-text); font: inherit; }
+.manager-gate input:hover { border-color: var(--color-muted); }
+.manager-gate-feedback { min-height: 1.5em; margin: 12px 0 0; font-size: .88rem; }
+.manager-gate-feedback.manager-error { color: #f0bbbb; }
 .manager-local-note, .manager-note { padding: 13px 17px; border-left: 3px solid var(--color-accent); background: var(--color-surface); color: var(--color-muted); font-size: .88rem; }
 .manager-panel { margin-top: 28px; padding: clamp(20px, 3vw, 32px); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
 .manager-panel h2 { margin: 0; font-size: 1.35rem; letter-spacing: -.03em; }
