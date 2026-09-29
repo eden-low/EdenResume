@@ -15,17 +15,19 @@ const mainSource = read(script[4]);
 
 function load(page, slug = '', seeded = {}) {
   const elements = new Map();
+  const classes = new Set();
+  const classList = { contains: name => classes.has(name), add: name => classes.add(name), remove: name => classes.delete(name), toggle(name, force) { const on = force === undefined ? !classes.has(name) : force; on ? classes.add(name) : classes.delete(name); return on; } };
   const element = id => {
-    if (!elements.has(id)) elements.set(id, { innerHTML: '', listeners: {}, addEventListener(name, callback) { this.listeners[name] = callback; } });
+    if (!elements.has(id)) elements.set(id, { innerHTML: '', listeners: {}, classList, attrs: {}, addEventListener(name, callback) { this.listeners[name] = callback; }, setAttribute(name, value) { this.attrs[name] = value; }, getAttribute(name) { return this.attrs[name]; } });
     return elements.get(id);
   };
   const buttons = ['en', 'zh'].map(lang => ({ dataset: { language: lang }, listeners: {}, addEventListener(name, callback) { this.listeners[name] = callback; } }));
   const menu = { attrs: { 'aria-expanded': 'false' }, listeners: {}, addEventListener(name, callback) { this.listeners[name] = callback; }, getAttribute(name) { return this.attrs[name]; }, setAttribute(name, value) { this.attrs[name] = value; } };
   const document = {
-    body: { dataset: { page } }, documentElement: { lang: 'en' },
+    body: { dataset: { page }, classList }, documentElement: { lang: 'en' },
     addEventListener() {}, removeEventListener() {},
     getElementById(id) { return id === 'print-resume' && page !== 'resume' ? null : element(id); },
-    querySelector(selector) { return selector === '.menu-toggle' ? menu : null; },
+    querySelector(selector) { if (selector === '.menu-toggle') return menu; if (selector === '.sidebar-collapse') return { ...element(selector), querySelector() { return { textContent: '' }; } }; return selector === '.nav-backdrop' ? element(selector) : null; },
     querySelectorAll(selector) { return selector === '[data-language]' ? buttons : []; }
   };
   const storage = new Map(Object.entries(seeded));
@@ -46,6 +48,12 @@ for (const page of ['home', 'projects', 'resume', 'cv']) {
   assert.match(view.header.innerHTML, /cv\.html/);
   assert.equal((view.header.innerHTML.match(/href="\.\/project-manager\.html"/g) || []).length, 1);
   assert.match(view.header.innerHTML, /Resume Workspace/);
+  assert.match(view.header.innerHTML, /class="sidebar-collapse"/);
+  assert.match(view.header.innerHTML, /data-nav="manager"/);
+  const menuButton = view.document.querySelector('.menu-toggle');
+  menuButton.listeners.click({ currentTarget: menuButton });
+  assert.equal(menuButton.getAttribute('aria-expanded'), 'true');
+  assert.equal(view.document.body.classList.contains('nav-open'), true);
   view.buttons[1].listeners.click();
   assert.equal(view.document.documentElement.lang, 'zh-Hans');
   assert.equal(view.storage.get('resume-language'), 'zh');

@@ -22,7 +22,7 @@
       solution: 'Solution', result: 'Result', learned: 'What I Learned', technology: 'Technology / Skills', responsibilities: 'Responsibilities', technicalDecisions: 'Technical decisions',
       previous: 'Previous Project', next: 'Next Project', backProjects: 'All Projects',
       notFound: 'Project not found', notFoundCopy: 'This project link does not match a published case study.', caseStudyUnavailable: 'A detailed case study is not available for this project. Available project information is shown below.',
-      footer: 'Portfolio & resume'
+      footer: 'Portfolio & resume', collapseNav: 'Collapse navigation', expandNav: 'Expand navigation'
     },
     zh: {
       home: '首页', projects: '项目', resume: '简历', cv: '完整履历', manager: '简历工作区', contact: '联系', menu: '打开导航菜单',
@@ -41,7 +41,7 @@
       solution: '解决方案', result: '成果', learned: '所学经验', technology: '技术 / 技能', responsibilities: '职责', technicalDecisions: '技术决策',
       previous: '上一个项目', next: '下一个项目', backProjects: '所有项目',
       notFound: '找不到项目', notFoundCopy: '此项目链接与现有案例不符。', caseStudyUnavailable: '此项目尚无完整案例，以下显示现有的项目信息。',
-      footer: '作品集与履历'
+      footer: '作品集与履历', collapseNav: '收起导航', expandNav: '展开导航'
     }
   };
   let language;
@@ -188,8 +188,10 @@
     </article></div>`;
   }
   function renderHeader() {
-    const active = page === 'project' ? 'projects' : page;
-    document.getElementById('site-header').innerHTML = `<header class="site-header"><div class="container nav-inner"><a class="brand" href="./index.html" aria-label="${escapeHtml(data.PROFILE.name)} — ${t('home')}"><span class="brand-mark" aria-hidden="true">${escapeHtml(data.PROFILE.initials)}</span><span><strong>${escapeHtml(data.PROFILE.displayName)}</strong><small>${escapeHtml(data.PROFILE.name)}</small></span></a><button class="menu-toggle" type="button" aria-label="${t('menu')}" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button><nav id="primary-nav" class="primary-nav" aria-label="${t('menu')}"><a href="./index.html" ${active === 'home' ? 'aria-current="page"' : ''}>${t('home')}</a><a href="./projects.html" ${active === 'projects' ? 'aria-current="page"' : ''}>${t('projects')}</a><a href="./resume.html" ${active === 'resume' ? 'aria-current="page"' : ''}>${t('resume')}</a><a href="./cv.html" ${active === 'cv' ? 'aria-current="page"' : ''}>${t('cv')}</a><a href="./project-manager.html" ${active === 'manager' ? 'aria-current="page"' : ''}>${t('manager')}</a><a href="./index.html#contact">${t('contact')}</a><div class="language-switch" role="group" aria-label="${t('languageLabel')}"><button type="button" data-language="en" aria-pressed="${language === 'en'}">EN</button><span aria-hidden="true">/</span><button type="button" data-language="zh" aria-pressed="${language === 'zh'}">中文</button></div></nav></div></header>`;
+    const active = page === 'project' ? 'projects' : page === 'home' && window.location.hash === '#contact' ? 'contact' : page;
+    const navLink = (key, href, marker) => `<a href="${href}" data-nav="${key}" data-label="${escapeHtml(t(key))}" title="${escapeHtml(t(key))}" aria-label="${escapeHtml(t(key))}" ${active === key ? 'aria-current="page"' : ''}><span class="nav-marker" aria-hidden="true">${marker}</span><span class="nav-label">${t(key)}</span></a>`;
+    const collapsed = document.body.classList.contains('nav-collapsed');
+    document.getElementById('site-header').innerHTML = `<header class="site-header"><div class="nav-inner"><a class="brand" href="./index.html" aria-label="${escapeHtml(data.PROFILE.name)} — ${t('home')}"><span class="brand-mark" aria-hidden="true">${escapeHtml(data.PROFILE.initials)}</span><span class="brand-name"><strong>${escapeHtml(data.PROFILE.displayName)}</strong><small>${escapeHtml(data.PROFILE.name)}</small></span></a><button class="menu-toggle" type="button" aria-label="${t('menu')}" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button><nav id="primary-nav" class="primary-nav" aria-label="${t('menu')}">${navLink('home', './index.html', 'H')}${navLink('projects', './projects.html', 'P')}${navLink('resume', './resume.html', 'R')}${navLink('cv', './cv.html', 'CV')}${navLink('manager', './project-manager.html', 'W')}${navLink('contact', './index.html#contact', '@')}<div class="sidebar-bottom"><div class="language-switch" role="group" aria-label="${t('languageLabel')}"><button type="button" data-language="en" aria-pressed="${language === 'en'}">EN</button><span aria-hidden="true">/</span><button type="button" data-language="zh" aria-pressed="${language === 'zh'}">中文</button></div><button class="sidebar-collapse" type="button" aria-label="${t(collapsed ? 'expandNav' : 'collapseNav')}" aria-expanded="${!collapsed}" aria-controls="primary-nav" title="${t(collapsed ? 'expandNav' : 'collapseNav')}"><span class="collapse-marker" aria-hidden="true">${collapsed ? '→' : '←'}</span><span class="nav-label">${t(collapsed ? 'expandNav' : 'collapseNav')}</span></button></div></nav></div><button class="nav-backdrop" type="button" tabindex="-1" aria-label="${t('closeMenu')}"></button></header>`;
   }
   function renderFooter() {
     document.getElementById('site-footer').innerHTML = page === 'resume' || page === 'cv' ? '' : `<footer class="site-footer"><div class="container footer-inner"><span>© ${new Date().getFullYear()} ${escapeHtml(data.PROFILE.name)}</span><span>${t('footer')}</span><a href="mailto:${escapeHtml(data.PROFILE.email)}">${escapeHtml(data.PROFILE.email)}</a></div></footer>`;
@@ -198,10 +200,6 @@
     syncProjects();
     document.documentElement.lang = language === 'zh' ? 'zh-Hans' : 'en';
     renderHeader();
-    if (menuOpen) {
-      document.querySelector('.menu-toggle').setAttribute('aria-expanded', 'true');
-      document.getElementById('primary-nav').classList.add('is-open');
-    }
     const main = document.getElementById('main');
     main.innerHTML = page === 'home' ? renderHome() : page === 'projects' ? renderProjects() : page === 'resume' ? renderResume() : page === 'cv' ? window.renderCVPage({ data, language, t, safe, escapeHtml, value }) : page === 'manager' ? window.ProjectManager.render({ data, language }) : window.renderProjectPage({ data, language, t, safe, escapeHtml, tags, projectHref });
     if (page === 'resume' && typeof main.querySelector === 'function') fitResumeProjects(main, documentProjects('includeInResume', 'resumePriority'));
@@ -213,17 +211,37 @@
       menuToggle.setAttribute('aria-expanded', String(open));
       menuToggle.setAttribute('aria-label', t(open ? 'closeMenu' : 'menu'));
       document.getElementById('primary-nav').classList.toggle('is-open', open);
+      document.body.classList.toggle('nav-open', open);
       if (returnFocus) menuToggle.focus();
     };
-    if (menuOpen) menuToggle.setAttribute('aria-label', t('closeMenu'));
+    if (menuOpen) setMenuOpen(true);
     menuToggle.addEventListener('click', event => {
       const button = event.currentTarget;
       const open = button.getAttribute('aria-expanded') !== 'true';
       setMenuOpen(open);
     });
+    document.querySelector('.nav-backdrop').addEventListener('click', () => setMenuOpen(false, true));
+    document.querySelector('.sidebar-collapse').addEventListener('click', () => {
+      document.body.classList.toggle('nav-collapsed');
+      const collapsed = document.body.classList.contains('nav-collapsed');
+      const control = document.querySelector('.sidebar-collapse');
+      control.setAttribute('aria-expanded', String(!collapsed));
+      control.setAttribute('aria-label', t(collapsed ? 'expandNav' : 'collapseNav'));
+      control.setAttribute('title', t(collapsed ? 'expandNav' : 'collapseNav'));
+      control.querySelector('.collapse-marker').textContent = collapsed ? '→' : '←';
+      control.querySelector('.nav-label').textContent = t(collapsed ? 'expandNav' : 'collapseNav');
+    });
+    document.querySelectorAll('.primary-nav > a').forEach(link => link.addEventListener('click', () => setMenuOpen(false)));
     if (menuKeydownHandler) document.removeEventListener('keydown', menuKeydownHandler);
     menuKeydownHandler = event => {
       if (event.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') setMenuOpen(false, true);
+      if (event.key === 'Tab' && menuToggle.getAttribute('aria-expanded') === 'true' && window.matchMedia?.('(max-width: 900px)').matches) {
+        const focusable = [menuToggle, ...document.getElementById('primary-nav').querySelectorAll('a, button')].filter(item => getComputedStyle(item).display !== 'none');
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
     };
     document.addEventListener('keydown', menuKeydownHandler);
     document.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => {
@@ -235,4 +253,11 @@
     if (focusLanguage) document.querySelector(`[data-language="${language}"]`)?.focus();
   }
   render();
+  window.addEventListener?.('hashchange', () => {
+    if (page !== 'home') return;
+    document.querySelectorAll('.primary-nav > a[data-nav]').forEach(link => {
+      if ((window.location.hash === '#contact' ? 'contact' : 'home') === link.dataset.nav) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+  });
 })();

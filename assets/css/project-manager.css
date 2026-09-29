@@ -1,6 +1,6 @@
 /* Resume workspace uses the portfolio tokens and components. */
-.manager-page { max-width: var(--content-width); }
-.manager-page .page-intro { padding-bottom: 24px; }
+.manager-page { max-width: 1060px; }
+.manager-page .page-intro { padding-bottom: 20px; }
 .manager-heading-row { display: flex; align-items: start; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
 .manager-lock { flex: none; margin-top: 8px; }
 .manager-gate { width: min(100%, 440px); margin: clamp(36px, 9vh, 90px) auto; }
@@ -11,20 +11,23 @@
 .manager-gate-feedback { min-height: 1.5em; margin: 12px 0 0; font-size: .88rem; }
 .manager-gate-feedback.manager-error { color: #f0bbbb; }
 .manager-local-note, .manager-note { padding: 13px 17px; border-left: 3px solid var(--color-accent); background: var(--color-surface); color: var(--color-muted); font-size: .88rem; }
-.manager-panel { margin-top: 28px; padding: clamp(20px, 3vw, 32px); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.manager-panel { margin-top: 24px; padding: clamp(20px, 2.8vw, 30px); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
 .manager-panel h2 { margin: 0; font-size: 1.35rem; letter-spacing: -.03em; }
-.manager-section-head { margin-bottom: 22px; }
+.manager-section-head { margin-bottom: 18px; }
 .manager-section-head p { margin: 7px 0 0; color: var(--color-muted); font-size: .88rem; }
 .manager-sync { display: flex; align-items: end; gap: 12px; }
 .manager-sync .manager-field { width: min(100%, 320px); }
 .manager-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; color: var(--color-text); font-size: .81rem; font-weight: 650; }
-.manager-field input, .manager-field textarea, .manager-field select { width: 100%; min-width: 0; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-text); font: 400 .9rem/1.45 system-ui, sans-serif; }
+.manager-field input, .manager-field textarea, .manager-field select { width: 100%; min-width: 0; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-text); font: 400 .9rem/1.45 system-ui, sans-serif; transition: border-color .18s, background .18s; }
 .manager-field textarea { resize: vertical; }
+.manager-field input { min-height: 44px; }
 .manager-field input:hover, .manager-field textarea:hover, .manager-field select:hover { border-color: var(--color-muted); }
+.manager-field input:focus-visible, .manager-field textarea:focus-visible, .manager-field select:focus-visible { border-color: var(--color-accent); background: var(--color-elevated); }
+.manager-field select { min-height: 44px; }
 .manager-feedback { margin: 20px 0 0; padding: 16px; border: 1px dashed var(--color-border); border-radius: var(--radius-sm); color: var(--color-muted); font-size: .88rem; }
 .manager-error { border-color: #d79090; color: #f0bbbb; }
 .manager-repo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 22px; }
-.manager-repo { min-width: 0; padding: 20px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); overflow-wrap: anywhere; }
+.manager-repo { min-width: 0; padding: 18px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); overflow-wrap: anywhere; }
 .manager-repo h3, .manager-saved-card h3 { margin: 12px 0 8px; font-size: 1.1rem; line-height: 1.3; }
 .manager-repo > p { margin: 0 0 13px; color: var(--color-muted); font-size: .87rem; }
 .manager-repo > .manager-readme-status, .manager-draft > .manager-readme-status { margin: 12px 0 0; color: var(--color-text); font-size: .82rem; font-weight: 650; overflow-wrap: anywhere; }
@@ -34,11 +37,11 @@
 .manager-repo .tag-list { margin-bottom: 15px; }
 .manager-archive, .manager-status { color: var(--color-muted); font-size: .75rem; }
 .manager-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 9px 14px; margin-top: 17px; }
-.manager-actions .button { min-height: 37px; padding: 7px 11px; }
+.manager-actions .button { min-height: 42px; padding: 7px 11px; }
 .manager-readme { max-height: 360px; overflow: auto; margin: 0; padding: 16px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-muted); white-space: pre-wrap; overflow-wrap: anywhere; font: .78rem/1.5 ui-monospace, Consolas, monospace; }
 .manager-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .manager-form-grid .manager-field:has(textarea) { grid-column: span 2; }
-.manager-editor-section { min-width: 0; margin: 18px 0 0; padding: 17px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+.manager-editor-section { min-width: 0; margin: 18px 0 0; padding: 18px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
 .manager-editor-section legend { padding: 0 8px; color: var(--color-text); font-size: 1.02rem; font-weight: 700; }
 .manager-bullet-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .manager-bullet-grid h3 { margin: 0 0 10px; color: var(--color-muted); font-size: .82rem; }
@@ -48,11 +51,12 @@
 .manager-readiness p + p { margin-top: 6px; }
 .manager-readiness strong { color: var(--color-text); }
 .manager-readiness span { display: block; margin-top: 4px; }
-.manager-draft > #draft-readiness .manager-readiness { margin: 0 0 17px; padding: 11px 14px; border-left: 3px solid var(--color-accent); background: var(--color-bg); }
+.manager-draft > #draft-readiness .manager-readiness { margin: 0 0 17px; padding: 12px 14px; border-left: 2px solid var(--color-accent); background: var(--color-bg); }
 .manager-details { margin-top: 16px; }
-.manager-details > summary { cursor: pointer; color: var(--color-text); font-size: .88rem; font-weight: 650; }
+.manager-details > summary { cursor: pointer; color: var(--color-text); font-size: .88rem; font-weight: 650; transition: color .18s; }
+.manager-details > summary:hover { color: var(--color-accent); }
 .manager-details[open] > summary { margin-bottom: 16px; }
-.manager-archived { padding: 15px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+.manager-archived { padding: 15px 18px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); }
 .manager-archived .manager-saved-list, .manager-archived .manager-repo-grid { margin-top: 12px; }
 .manager-help { margin: 0 0 14px; color: var(--color-muted); font-size: .85rem; }
 .manager-suggestion { margin: 0 0 14px; padding: 10px 12px; border-left: 2px solid var(--color-accent); background: var(--color-bg); color: var(--color-text); font-size: .85rem; }
@@ -62,11 +66,12 @@
 .manager-help { margin: 12px 0 0; }
 .manager-choices { display: flex; align-items: end; flex-wrap: wrap; gap: 12px 22px; margin-top: 19px; padding-top: 17px; border-top: 1px solid var(--color-border); }
 .manager-use-label { align-self: center; color: var(--color-muted); font-size: .82rem; font-weight: 650; }
-.manager-check { display: inline-flex; align-items: center; gap: 9px; color: var(--color-text); font-size: .82rem; cursor: pointer; }
+.manager-check { display: inline-flex; align-items: center; gap: 9px; min-height: 36px; color: var(--color-text); font-size: .82rem; cursor: pointer; }
 .manager-check input { width: 17px; height: 17px; margin: 0; accent-color: var(--color-accent); }
 .manager-priority { width: min(220px, 100%); }
 .manager-saved-list { display: grid; gap: 12px; }
 .manager-saved-card { min-width: 0; padding: 18px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); overflow-wrap: anywhere; }
+.manager-saved-card:focus-within { border-color: var(--color-accent); }
 .manager-saved-head { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
 .manager-saved-head > div { min-width: 0; max-width: 100%; }
 .manager-saved-card h3 { margin-bottom: 0; }
@@ -77,6 +82,8 @@
   .manager-sync { align-items: stretch; flex-direction: column; }
   .manager-sync .manager-field { width: 100%; }
   .manager-sync .button { align-self: flex-start; }
+  .manager-check { min-height: 44px; }
+  .manager-actions .button { min-height: 44px; }
 }
 @media (max-width: 420px) {
   .manager-panel { padding: 18px; }
